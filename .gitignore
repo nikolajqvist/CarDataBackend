@@ -1,5 +1,5 @@
-./Test/CarDataTest/bin
-./Test/CarDataTest/obj
-./Consumedata
-./cardataapi/obj
-./cardataapi/bin
+Test/CarDataTest/bin
+Test/CarDataTest/obj
+Consumedata
+cardataapi/obj
+cardataapi/bin
