@@ -11,8 +11,8 @@ namespace cardataapi.Controllers{
     [ApiController]
     public class CarDataSqliteController : ControllerBase
     {
-       public CarDataSqliteRepository? carDataSqliteRepository;
-       public CarDataSqliteController(CarDataSqliteRepository carDataSqliteRepository){
+       public CarDataSqliteChunkRepository? carDataSqliteRepository;
+       public CarDataSqliteController(CarDataSqliteChunkRepository carDataSqliteRepository){
            this.carDataSqliteRepository = carDataSqliteRepository;
        }
         [HttpPost]
