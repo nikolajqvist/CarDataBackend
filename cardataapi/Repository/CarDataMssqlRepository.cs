@@ -282,49 +282,49 @@ public class CarDataMssqlRepository{
             throw new Exception(e.Message);
         }
     }
-    public async void AddScenarios(List<Scenario> scenarios, User user)
-    {
-        try
-        {
-            SqlConnection connection = HelperMethods.NewConnection(connectionString);
-            using (connection)
-            {
-                connection.Open();
-                DataTable table = new DataTable();
-                SqlBulkCopy bulk = new SqlBulkCopy(connection)
-                {
-                    DestinationTableName = "dbo.Scenario",
-                    BatchSize = 1000,
-                    //Antal sekunder før timeout
-                    BulkCopyTimeout = 60,
-                    //Skal testes og evt fjernes hvis det ligefyldigt.
-                    //Det sørger for at streaming til db kan forsætte uden problemer.
-                    EnableStreaming = true
-                };
-                //ColumnMappings er mapningen af rækkernes navne i Db
-                //De skal passe med navnet i db.
-                //De bytter table navne ud hvis de evt ikke skulle passe.
-                bulk.ColumnMappings.Add("UserId", "UserId");
-                bulk.ColumnMappings.Add("ScenarioStart", "ScenarioStart");
-                bulk.ColumnMappings.Add("ScenarioEnd", "ScenarioEnd");
-                //Column her er tilføjelsen af kolonner til table. 
-                //Med datatype
-                table.Columns.Add("UserId", typeof(int));
-                table.Columns.Add("ScenarioStart", typeof(DateTime));
-                table.Columns.Add("ScenarioEnd", typeof(DateTime));
-                foreach (Scenario scenario in scenarios)
-                {
-                    //Tilføjelse af rækker i db.
-                    table.Rows.Add(user.TestPersonNumber, scenario.ScenarioStart, scenario.ScenarioEnd);
-                }
-                //Skrivning af hele bulken til det (table) vi har mappet til.
-                await bulk.WriteToServerAsync(table);
-            }
-        }
-        catch (SqlException e)
-        {
-            throw new Exception(e.Message);
-        }
-    }
+    // public async void AddScenarios(List<Scenario> scenarios, User user)
+    // {
+    //     try
+    //     {
+    //         SqlConnection connection = HelperMethods.NewConnection(connectionString);
+    //         using (connection)
+    //         {
+    //             connection.Open();
+    //             DataTable table = new DataTable();
+    //             SqlBulkCopy bulk = new SqlBulkCopy(connection)
+    //             {
+    //                 DestinationTableName = "dbo.Scenario",
+    //                 BatchSize = 1000,
+    //                 //Antal sekunder før timeout
+    //                 BulkCopyTimeout = 60,
+    //                 //Skal testes og evt fjernes hvis det ligefyldigt.
+    //                 //Det sørger for at streaming til db kan forsætte uden problemer.
+    //                 EnableStreaming = true
+    //             };
+    //             //ColumnMappings er mapningen af rækkernes navne i Db
+    //             //De skal passe med navnet i db.
+    //             //De bytter table navne ud hvis de evt ikke skulle passe.
+    //             bulk.ColumnMappings.Add("UserId", "UserId");
+    //             bulk.ColumnMappings.Add("ScenarioStart", "ScenarioStart");
+    //             bulk.ColumnMappings.Add("ScenarioEnd", "ScenarioEnd");
+    //             //Column her er tilføjelsen af kolonner til table. 
+    //             //Med datatype
+    //             table.Columns.Add("UserId", typeof(int));
+    //             table.Columns.Add("ScenarioStart", typeof(DateTime));
+    //             table.Columns.Add("ScenarioEnd", typeof(DateTime));
+    //             foreach (Scenario scenario in scenarios)
+    //             {
+    //                 //Tilføjelse af rækker i db.
+    //                 table.Rows.Add(user.TestPersonNumber, scenario.ScenarioStart, scenario.ScenarioEnd);
+    //             }
+    //             //Skrivning af hele bulken til det (table) vi har mappet til.
+    //             await bulk.WriteToServerAsync(table);
+    //         }
+    //     }
+    //     catch (SqlException e)
+    //     {
+    //         throw new Exception(e.Message);
+    //     }
+    // }
 }
 
