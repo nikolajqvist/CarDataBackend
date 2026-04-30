@@ -93,42 +93,8 @@ public class CarDataSqliteChunkRepository{
     {
         try
         {
-            SqlConnection connection = HelperMethods.NewConnection(connectionString);
-            using (connection)
-            {
-                connection.Open();
-                DataTable table = new DataTable();
-                SqlBulkCopy bulk = new SqlBulkCopy(connection)
-                {
-                    DestinationTableName = "dbo.HeadTransform",
-                    BatchSize = 1000,
-                    BulkCopyTimeout = 60,
-                    EnableStreaming = true
-                };
-                bulk.ColumnMappings.Add("UserId", "UserId");
-                bulk.ColumnMappings.Add("RotW", "RotW");
-                bulk.ColumnMappings.Add("RotZ", "RotZ");
-                bulk.ColumnMappings.Add("RotX", "RotX");
-                bulk.ColumnMappings.Add("RotY", "RotY");
-                bulk.ColumnMappings.Add("PosX", "PosX");
-                bulk.ColumnMappings.Add("PosY", "PosY");
-                bulk.ColumnMappings.Add("PosZ", "PosZ");
-                table.Columns.Add("UserId", typeof(int));
-                table.Columns.Add("RotW", typeof(double));
-                table.Columns.Add("RotZ", typeof(double));
-                table.Columns.Add("RotX", typeof(double));
-                table.Columns.Add("RotY", typeof(double));
-                table.Columns.Add("PosX", typeof(double));
-                table.Columns.Add("PosY", typeof(double));
-                table.Columns.Add("PosZ", typeof(double));
-                foreach (HeadTransform hTF in headTransforms)
-                {
-                    table.Rows.Add(userId, hTF.RotW, hTF.RotZ, hTF.RotX, hTF.RotY, hTF.PosX, hTF.PosY, hTF.PosZ);
-                }
-                await bulk.WriteToServerAsync(table);
-            }
         }
-        catch (SqlException e)
+        catch (SqliteException e)
         {
             throw new Exception(e.Message);
         }
@@ -137,28 +103,8 @@ public class CarDataSqliteChunkRepository{
     {
         try
         {
-            SqlConnection connection = HelperMethods.NewConnection(connectionString);
-            using (connection)
-            {
-                connection.Open();
-                DataTable table = new DataTable();
-                SqlBulkCopy bulk = new SqlBulkCopy(connection)
-                {
-                    DestinationTableName = "dbo.TimeCheck",
-                    BatchSize = 1000,
-                    BulkCopyTimeout = 60,
-                    EnableStreaming = true
-                };
-                bulk.ColumnMappings.Add("Time", "Time");
-                table.Columns.Add("Time", typeof(int));
-                foreach (TimeCheck time in timeChecks)
-                {
-                    table.Rows.Add(time.Time);
-                }
-                await bulk.WriteToServerAsync(table);
-            }
         }
-        catch (SqlException e)
+        catch (SqliteException e)
         {
             throw new Exception(e.Message);
         }

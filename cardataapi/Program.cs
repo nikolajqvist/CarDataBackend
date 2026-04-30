@@ -12,8 +12,10 @@ public class Program
         {
             throw new Exception("Databasefejl");
         }
-        builder.Services.AddSingleton<CarDataRepository>(new CarDataRepository(cardatadb));
+        builder.Services.AddSingleton<CarDataMssqlRepository>(new CarDataMssqlRepository(cardatadb));
         builder.Services.AddSingleton<CarDataChunkRepository>(new CarDataChunkRepository(cardatadb));
+        builder.Services.AddSingleton<CarDataSqliteRepository>(new CarDataSqliteRepository(cardatadb));
+        builder.Services.AddSingleton<CarDataSqliteChunkRepository>(new CarDataSqliteChunkRepository(cardatadb));
 
         // builder.WebHost.UseUrls("https://0.0.0.0:5000");
 
