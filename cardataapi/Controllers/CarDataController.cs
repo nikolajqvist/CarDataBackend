@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using System.Reflection.Metadata;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,12 +14,14 @@ namespace cardataapi.Controllers
     [ApiController]
     public class CarDataController : ControllerBase
     {
-        private CarDataRepository carDataRepository;
+        private CarDataMssqlRepository carDataRepository;
         private CarDataChunkRepository chunkRepository;
-        public CarDataController(CarDataRepository carDataRepository, CarDataChunkRepository chunkRepository)
+        private CarDataSqliteRepository carDataSqliteRepository;
+        public CarDataController(CarDataMssqlRepository carDataRepository, CarDataChunkRepository chunkRepository, CarDataSqliteRepository carDataSqliteRepository)
         {
             this.carDataRepository = carDataRepository;
             this.chunkRepository = chunkRepository;
+            this.carDataSqliteRepository = carDataSqliteRepository;
         }
         // GET: api/<PostController>
         [HttpGet]
@@ -29,6 +32,15 @@ namespace cardataapi.Controllers
                 return Ok(users);
             else
                 return BadRequest();
+        }
+        [HttpPost]
+        [Route("postLiteData")]
+        public IActionResult PostBikeData([FromBody] BikeData bikeData, int userId){
+            carDataSqliteRepository.AddBikeData(bikeData, userId); 
+            if(bikeData == null){
+                return BadRequest();
+            }
+            return Created("Did good", bikeData);
         }
         [HttpPost]
         [Route("logbikedata")]

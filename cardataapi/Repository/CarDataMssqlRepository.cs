@@ -7,9 +7,9 @@ using System.Linq.Expressions;
 using System.Collections;
 using Microsoft.Data.SqlClient;
 using CARDataLib;
-public class CarDataRepository{
+public class CarDataMssqlRepository{
     private readonly string connectionString;
-    public CarDataRepository(string connectionString)
+    public CarDataMssqlRepository(string connectionString)
     {
         this.connectionString = connectionString; 
     }

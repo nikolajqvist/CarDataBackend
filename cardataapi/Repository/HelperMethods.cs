@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 namespace cardataapi;
 public static class HelperMethods
 {
@@ -18,13 +19,14 @@ public static class HelperMethods
     {
         command.Parameters.AddWithValue(sqlparameter, parameter);
     }
-    public static SqlConnection NewConnection(string connectionString)
-    {
+    public static SqlConnection NewMssqlConnection(string connectionString) {
         return new SqlConnection(connectionString);
     }
-    public static SqlCommand NewCommand(string sql, SqlConnection connection)
-    {
+    public static SqlCommand NewMssqlCommand(string sql, SqlConnection connection) {
         return new SqlCommand(sql, connection);
+    }
+    public static SqliteConnection NewSqliteConnection(string connectionString){
+        return new SqliteConnection(connectionString);
     }
 }
 
