@@ -79,7 +79,7 @@ namespace cardataapi.Controllers{
                     p.DistanceCurbSide = curbSide;
                     p.Speed = spee;
                     bikeDatas.Add(p);
-                    carDataSqliteRepository.AddBikeData(bikeDatas, userId);
+                    carDataSqliteChunkRepository.AddBikeData(bikeDatas, userId);
             }
             return Ok("Did good!");
         }
