@@ -11,10 +11,39 @@ namespace cardataapi.Controllers{
     [ApiController]
     public class CarDataSqliteController : ControllerBase
     {
-       public CarDataSqliteChunkRepository? carDataSqliteRepository;
-       public CarDataSqliteController(CarDataSqliteChunkRepository carDataSqliteRepository){
-           this.carDataSqliteRepository = carDataSqliteRepository;
+       public CarDataSqliteChunkRepository? carDataSqliteChunkRepository;
+       public CarDataSqliteController(CarDataSqliteChunkRepository carDataSqliteChunkRepository){
+           this.carDataSqliteChunkRepository = carDataSqliteChunkRepository;
        }
+        [HttpPost]
+        [Route("logsqlitepulsedata")]
+        public async Task<IActionResult> PostPulseData([FromForm] IncomingFile incomingFile, int userId){
+            if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
+                return BadRequest("File fail");
+            }
+            var folderpath = Path.Combine(Directory.GetCurrentDirectory(), "Pulsedata");
+            var filepath = Path.Combine("Pulsedata", incomingFile.newTestFile.FileName);
+
+            Directory.CreateDirectory(folderpath);
+            FileStream stream = new FileStream(filepath, FileMode.Create);
+            using(stream){
+                await incomingFile.newTestFile.CopyToAsync(stream);
+            }
+            string fileContent = await System.IO.File.ReadAllTextAsync(filepath);
+            if(fileContent.Length == 0 && fileContent == null)
+                return NoContent();
+            string[] stringSplit = fileContent.Split("\n");
+
+            List<PulseData> pulseDatas = new List<PulseData>();
+
+            foreach (string line in stringSplit){
+                    int pulse = int.Parse(line);
+                    PulseData pulsed = new PulseData();
+                    pulsed.Pulse = pulse;
+                    carDataSqliteChunkRepository.AddPulseData(pulseDatas, userId);
+            }
+            return Ok("Did good!");
+        }
         [HttpPost]
         [Route("logsqlitebikedata")]
         public async Task<IActionResult> PostBikeData([FromForm] IncomingFile incomingFile, int userId){
