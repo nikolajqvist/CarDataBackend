@@ -16,6 +16,12 @@ public static class HelperMethods
     //         coomand.Parameters.AddWithValue(sqlparameter, parameter);
     //     }
     // }
+    public static SqliteParameter CreateParam(SqliteCommand command, string sqlparameter){ 
+        SqliteParameter createdParam = command.CreateParameter();
+        createdParam.ParameterName = sqlparameter;
+        command.Parameters.Add(createdParam);
+        return createdParam;
+    }
     public static void BindSqliteValueInt(SqliteCommand command, string sqlparameter, int parameter){
         command.Parameters.AddWithValue(sqlparameter, parameter);
     }
