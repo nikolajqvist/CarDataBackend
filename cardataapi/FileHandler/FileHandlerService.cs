@@ -71,6 +71,8 @@ public class FileHandlerService{
         List<HeadTransform> hTfs = new List<HeadTransform>();
 
         foreach(string[] chunk in chunks){
+            if(chunk.Length < 7)
+                throw new ArgumentOutOfRangeException("Chunk skal minimum være 7");
             double rw = double.Parse(chunk[0]);
             double rz = double.Parse(chunk[1]);
             double rx = double.Parse(chunk[2]);
@@ -129,32 +131,32 @@ public class FileHandlerService{
         }
         await carDataSqliteChunkRepository.AddScenarios(scenarios, id);
     }
-    public async Task HandleTimeCheck(IncomingFile incomingFile){
-        ValidateFile(incomingFile);
-        var folderpath = CreateFolderPath("userTimeCheck");
-        var filepath = CreateFilePath(incomingFile, "userTimeCheck");
-        CreateDirectory(folderpath);
-
-        FileStream stream = new FileStream(filepath, FileMode.Create);
-        using(stream){
-            await incomingFile.newTestFile.CopyToAsync(stream);
-        }
-        string fileContent = ReadFile(filepath);
-        if(fileContent.Length == 0 || fileContent == null){
-            throw new ArgumentNullException("Intet indhold");
-        }
-        var fileSplit = fileContent.Split("\n");
-        
-        List<TimeCheck> timeChecks = new List<TimeCheck>();
-
-        foreach(string line in fileSplit){
-            int time = int.Parse(line);
-            TimeCheck tC = new TimeCheck();
-            tC.Time = time;
-            timeChecks.Add(tC);
-        }
-        await carDataSqliteChunkRepository.AddTimeCheck(timeChecks);
-    }
+    // public async Task HandleTimeCheck(IncomingFile incomingFile){
+    //     ValidateFile(incomingFile);
+    //     var folderpath = CreateFolderPath("userTimeCheck");
+    //     var filepath = CreateFilePath(incomingFile, "userTimeCheck");
+    //     CreateDirectory(folderpath);
+    //
+    //     FileStream stream = new FileStream(filepath, FileMode.Create);
+    //     using(stream){
+    //         await incomingFile.newTestFile.CopyToAsync(stream);
+    //     }
+    //     string fileContent = ReadFile(filepath);
+    //     if(fileContent.Length == 0 || fileContent == null){
+    //         throw new ArgumentNullException("Intet indhold");
+    //     }
+    //     var fileSplit = fileContent.Split("\n");
+    //
+    //     List<TimeCheck> timeChecks = new List<TimeCheck>();
+    //
+    //     foreach(string line in fileSplit){
+    //         int time = int.Parse(line);
+    //         TimeCheck tC = new TimeCheck();
+    //         tC.Time = time;
+    //         timeChecks.Add(tC);
+    //     }
+    //     await carDataSqliteChunkRepository.AddTimeCheck(timeChecks);
+    // }
     public async Task HandleBraking(IncomingFile incomingFile){
         ValidateFile(incomingFile);
         string folderpath = CreateFolderPath("breakingdata");
@@ -175,6 +177,8 @@ public class FileHandlerService{
         List<LeftBrake> leftBrakes = new List<LeftBrake>();
         List<RightBrake> rightBrakes = new List<RightBrake>();
         foreach(var chunk in chunks){
+            if(chunk.Length < 3)
+                throw new ArgumentOutOfRangeException("Chunk skal minimum være 3");
             LeftBrake lB = new LeftBrake();
             RightBrake rB = new RightBrake();
             rB.RightBraking = bool.Parse(chunk[0]);

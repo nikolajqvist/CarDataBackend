@@ -30,7 +30,7 @@ public class CarDataSqliteChunkRepository{
                     cycletocardisParam.Value = scenario.CycleToCarDistance;
                     scenariostartParam.Value = scenario.ScenarioStart;
                     scenarioendParam.Value = scenario.ScenarioEnd;
-                    await ExecuteQuery(command);
+                    await command.ExecuteNonQueryAsync();
                 }
 
             }
@@ -55,7 +55,7 @@ public class CarDataSqliteChunkRepository{
     //             foreach(PulseData pulse in pulseData){
     //                 userIdParam.Value = userId;
     //                 pulseParam.Value = pulse.Pulse;
-    //                 ExecuteQuery(command);
+    //                  await command.ExecuteNonQueryAsync();
     //             }
     //         }
     //     }
@@ -83,7 +83,7 @@ public class CarDataSqliteChunkRepository{
                     handleyParam.Value = bikdD.HandleRotationY;
                     cubsideParam.Value = bikdD.DistanceCurbSide;
                     speedParam.Value = bikdD.Speed;
-                    await ExecuteQuery(command);
+                    await command.ExecuteNonQueryAsync();
                 }
             }
         }
@@ -93,7 +93,7 @@ public class CarDataSqliteChunkRepository{
         }
     }
     public async Task AddHeadTransform(List<HeadTransform> headTransforms, int userId)
-    {
+    { 
         try
         {
             SqliteConnection connection = new SqliteConnection(connectionString);
@@ -120,7 +120,7 @@ public class CarDataSqliteChunkRepository{
                     pXParam.Value = htf.PosX;
                     pYParam.Value = htf.PosY;
                     pZParam.Value = htf.PosZ;
-                    await ExecuteQuery(command);
+                    await command.ExecuteNonQueryAsync();
                 }
             }
         }
@@ -144,7 +144,7 @@ public class CarDataSqliteChunkRepository{
                     userIdParam.Value = userid;
                     brakeParam1.Value = lb.LeftBraking;
                     dateParam1.Value = lb.BrakeTime;
-                    await ExecuteQuery(cmd1);
+                    await cmd1.ExecuteNonQueryAsync();
                 }
             }
         }
@@ -153,33 +153,36 @@ public class CarDataSqliteChunkRepository{
         }
     }
     public async Task AddRigthBrake(List<RightBrake> rightBrakes, int userid){
-        SqliteConnection connection = new SqliteConnection(connectionString);
-        using(connection){
-            string sql2 = "insert into RightBrake values (null, @userId, @brake, @datetime)";
-            SqliteCommand cmd2 = connection.CreateCommand();
-            cmd2.CommandText = sql2;
-            SqliteParameter userIdParam2 = HelperMethods.CreateParam(cmd2, "@userId");
-            SqliteParameter brakeParam2 = HelperMethods.CreateParam(cmd2, "@brake");
-            SqliteParameter dateParam2 = HelperMethods.CreateParam(cmd2, "@datetime");
-            foreach(RightBrake rb in rightBrakes){
-                userIdParam2.Value = userid;
-                brakeParam2.Value = rb.RightBraking;
-                dateParam2.Value = rb.BrakeTime;
-                await ExecuteQuery(cmd2);
+        try{
+            SqliteConnection connection = new SqliteConnection(connectionString);
+            using(connection){
+                string sql2 = "insert into RightBrake values (null, @userId, @brake, @datetime)";
+                SqliteCommand cmd2 = connection.CreateCommand();
+                cmd2.CommandText = sql2;
+                SqliteParameter userIdParam2 = HelperMethods.CreateParam(cmd2, "@userId");
+                SqliteParameter brakeParam2 = HelperMethods.CreateParam(cmd2, "@brake");
+                SqliteParameter dateParam2 = HelperMethods.CreateParam(cmd2, "@datetime");
+                foreach(RightBrake rb in rightBrakes){
+                    userIdParam2.Value = userid;
+                    brakeParam2.Value = rb.RightBraking;
+                    dateParam2.Value = rb.BrakeTime;
+                    await cmd2.ExecuteNonQueryAsync();
+                }
             }
         }
-    }
-    public async Task AddTimeCheck(List<TimeCheck> timeChecks)
-    {
-        try
-        {
-        }
-        catch (SqliteException e)
-        {
+        catch(SqliteException e){
             throw new Exception(e.Message);
         }
     }
-    private async Task ExecuteQuery(SqliteCommand command){ 
-        command.ExecuteNonQuery(); 
-    } 
+
+    // public async Task AddTimeCheck(List<TimeCheck> timeChecks)
+    // {
+    //     try
+    //     {
+    //     }
+    //     catch (SqliteException e)
+    //     {
+    //         throw new Exception(e.Message);
+    //     }
+    // }
 }

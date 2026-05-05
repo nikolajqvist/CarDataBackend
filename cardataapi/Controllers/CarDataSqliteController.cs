@@ -45,14 +45,14 @@ namespace cardataapi.Controllers{
            await fileHandlerService.HandleBraking(incomingFile);
            return Ok("Very nice yub");
        }
-       [HttpPost]
-       [Route("logsqlitetime")]
-       public async Task<IActionResult> PostTime([FromForm] IFormFile file){
-           if(file.Length == 0 || file == null) return BadRequest();
-           IncomingFile incomingFile = new();
-           incomingFile.newTestFile = file;
-           await fileHandlerService.HandleTimeCheck(incomingFile);
-           return Ok("Very nice yub");
-       }
+       // [HttpPost]
+       // [Route("logsqlitetime")]
+       // public async Task<IActionResult> PostTime([FromForm] IFormFile file){
+       //     if(file.Length == 0 || file == null) return BadRequest();
+       //     IncomingFile incomingFile = new();
+       //     incomingFile.newTestFile = file;
+       //     await fileHandlerService.HandleTimeCheck(incomingFile);
+       //     return Ok("Very nice yub");
+       // }
     }
 }
