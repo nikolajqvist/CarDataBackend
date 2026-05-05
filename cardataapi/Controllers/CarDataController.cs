@@ -14,104 +14,104 @@ namespace cardataapi.Controllers
     [ApiController]
     public class CarDataController : ControllerBase
     {
-        private CarDataMssqlRepository carDataRepository;
-        private CarDataChunkRepository chunkRepository;
-        private CarDataSqliteRepository carDataSqliteRepository;
-        public CarDataController(CarDataMssqlRepository carDataRepository, CarDataChunkRepository chunkRepository, CarDataSqliteRepository carDataSqliteRepository)
-        {
-            this.carDataRepository = carDataRepository;
-            this.chunkRepository = chunkRepository;
-            this.carDataSqliteRepository = carDataSqliteRepository;
-        }
-        // GET: api/<PostController>
-        [HttpGet]
-        public IActionResult Get()
-        {
-            List<User> users = carDataRepository.GetUsers();
-            if(users != null)
-                return Ok(users);
-            else
-                return BadRequest();
-        }
-        [HttpPost]
-        [Route("postLiteData")]
-        public IActionResult PostBikeData([FromBody] BikeData bikeData, int userId){
-            carDataSqliteRepository.AddBikeData(bikeData, userId); 
-            if(bikeData == null){
-                return BadRequest();
-            }
-            return Created("Did good", bikeData);
-        }
-        [HttpPost]
-        [Route("logbikedata")]
-        public async Task<IActionResult> PostBikeData([FromForm] IncomingFile incomingFile, int userId){
-            if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
-                return BadRequest("File fail");
-            }
-            var folderpath = Path.Combine(Directory.GetCurrentDirectory(), "TestUsers");
-            var filepath = Path.Combine("TestUsers", incomingFile.newTestFile.FileName);
-
-            Directory.CreateDirectory(folderpath);
-            FileStream stream = new FileStream(filepath, FileMode.Create);
-            using(stream){
-                await incomingFile.newTestFile.CopyToAsync(stream);
-            }
-            string fileContent = await System.IO.File.ReadAllTextAsync(filepath);
-            if(fileContent.Length == 0 && fileContent == null)
-                return NoContent();
-            string[] stringSplit = fileContent.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
-
-            var chunks = stringSplit.Chunk(3);
-
-            List<BikeData> bikeDatas = new List<BikeData>();
-
-            foreach (string[] chunk in chunks){
-                if(chunk.Length < 3) {
-                    return BadRequest();
-                };
-                    var yRot = double.Parse(chunk[0]);
-                    double curbSide = double.Parse(chunk[1]);
-                    double spee = double.Parse(chunk[2]);
-                    BikeData p = new BikeData();
-                    p.HandleRotationY = yRot;
-                    p.DistanceCurbSide = curbSide;
-                    p.Speed = spee;
-                    bikeDatas.Add(p);
-                    chunkRepository.AddBikeData(bikeDatas, userId);
-            }
-            return Ok("Did good!");
-        }
-        [HttpPost]
-        [Route("logpulse")]
-        public async Task<IActionResult> PostPulseData([FromForm] IncomingFile incomingFile, int userId){
-            if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
-                return BadRequest("File fail");
-            }
-            var folderpath = Path.Combine(Directory.GetCurrentDirectory(), "TestUsers");
-            var filepath = Path.Combine("TestUsers", incomingFile.newTestFile.FileName);
-
-            Directory.CreateDirectory(folderpath);
-            FileStream stream = new FileStream(filepath, FileMode.Create);
-            using(stream){
-               await incomingFile.newTestFile.CopyToAsync(stream);
-            }
-            string fileContent = await System.IO.File.ReadAllTextAsync(filepath);
-            if(fileContent.Length == 0 && fileContent == null)
-                return NoContent();
-            string[] stringSplit = fileContent.Split("\n");
-
-            List<PulseData> newPulseList = new List<PulseData>();
-
-            foreach (string content in stringSplit){
-                int pulse = int.Parse(content);
-                PulseData p = new PulseData();
-                p.Pulse = pulse;
-                newPulseList.Add(p);
-            }
-            chunkRepository.AddPulseData(newPulseList, userId);
-
-            return Ok("Did good!");
-        }
+        // private CarDataMssqlRepository carDataRepository;
+        // private CarDataChunkRepository chunkRepository;
+        // private CarDataSqliteRepository carDataSqliteRepository;
+        // public CarDataController(CarDataMssqlRepository carDataRepository, CarDataChunkRepository chunkRepository, CarDataSqliteRepository carDataSqliteRepository)
+        // {
+        //     this.carDataRepository = carDataRepository;
+        //     this.chunkRepository = chunkRepository;
+        //     this.carDataSqliteRepository = carDataSqliteRepository;
+        // }
+        // // GET: api/<PostController>
+        // [HttpGet]
+        // public IActionResult Get()
+        // {
+        //     List<User> users = carDataRepository.GetUsers();
+        //     if(users != null)
+        //         return Ok(users);
+        //     else
+        //         return BadRequest();
+        // }
+        // [HttpPost]
+        // [Route("postLiteData")]
+        // public IActionResult PostBikeData([FromBody] BikeData bikeData, int userId){
+        //     carDataSqliteRepository.AddBikeData(bikeData, userId); 
+        //     if(bikeData == null){
+        //         return BadRequest();
+        //     }
+        //     return Created("Did good", bikeData);
+        // }
+        // [HttpPost]
+        // [Route("logbikedata")]
+        // public async Task<IActionResult> PostBikeData([FromForm] IncomingFile incomingFile, int userId){
+        //     if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
+        //         return BadRequest("File fail");
+        //     }
+        //     var folderpath = Path.Combine(Directory.GetCurrentDirectory(), "TestUsers");
+        //     var filepath = Path.Combine("TestUsers", incomingFile.newTestFile.FileName);
+        //
+        //     Directory.CreateDirectory(folderpath);
+        //     FileStream stream = new FileStream(filepath, FileMode.Create);
+        //     using(stream){
+        //         await incomingFile.newTestFile.CopyToAsync(stream);
+        //     }
+        //     string fileContent = await System.IO.File.ReadAllTextAsync(filepath);
+        //     if(fileContent.Length == 0 && fileContent == null)
+        //         return NoContent();
+        //     string[] stringSplit = fileContent.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
+        //
+        //     var chunks = stringSplit.Chunk(3);
+        //
+        //     List<BikeData> bikeDatas = new List<BikeData>();
+        //
+        //     foreach (string[] chunk in chunks){
+        //         if(chunk.Length < 3) {
+        //             return BadRequest();
+        //         };
+        //             var yRot = double.Parse(chunk[0]);
+        //             double curbSide = double.Parse(chunk[1]);
+        //             double spee = double.Parse(chunk[2]);
+        //             BikeData p = new BikeData();
+        //             p.HandleRotationY = yRot;
+        //             p.DistanceCurbSide = curbSide;
+        //             p.Speed = spee;
+        //             bikeDatas.Add(p);
+        //             chunkRepository.AddBikeData(bikeDatas, userId);
+        //     }
+        //     return Ok("Did good!");
+        // }
+        // [HttpPost]
+        // [Route("logpulse")]
+        // public async Task<IActionResult> PostPulseData([FromForm] IncomingFile incomingFile, int userId){
+        //     if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
+        //         return BadRequest("File fail");
+        //     }
+        //     var folderpath = Path.Combine(Directory.GetCurrentDirectory(), "TestUsers");
+        //     var filepath = Path.Combine("TestUsers", incomingFile.newTestFile.FileName);
+        //
+        //     Directory.CreateDirectory(folderpath);
+        //     FileStream stream = new FileStream(filepath, FileMode.Create);
+        //     using(stream){
+        //        await incomingFile.newTestFile.CopyToAsync(stream);
+        //     }
+        //     string fileContent = await System.IO.File.ReadAllTextAsync(filepath);
+        //     if(fileContent.Length == 0 && fileContent == null)
+        //         return NoContent();
+        //     string[] stringSplit = fileContent.Split("\n");
+        //
+        //     List<PulseData> newPulseList = new List<PulseData>();
+        //
+        //     foreach (string content in stringSplit){
+        //         int pulse = int.Parse(content);
+        //         PulseData p = new PulseData();
+        //         p.Pulse = pulse;
+        //         newPulseList.Add(p);
+        //     }
+        //     chunkRepository.AddPulseData(newPulseList, userId);
+        //
+        //     return Ok("Did good!");
+        // }
         // [HttpPost]
         // [Route("userp")]
         // public IActionResult Post([FromBody] User user)

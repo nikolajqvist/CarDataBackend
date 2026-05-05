@@ -3,19 +3,6 @@ using Microsoft.Data.Sqlite;
 namespace cardataapi;
 public static class HelperMethods
 {
-    // public static void BindValueSqlLite(SqliteCommand coomand, string sqlparameter, string parameter, string? condition = null){
-    //     if(condition == "i"){
-    //         int intparameter = int.Parse(parameter);
-    //         coomand.Parameters.AddWithValue(sqlparameter, intparameter);
-    //     }
-    //     else if(condition == "d"){
-    //         double doubparameter = double.Parse(parameter);
-    //         coomand.Parameters.AddWithValue(sqlparameter, doubparameter);
-    //     }
-    //     else if(condition == null){
-    //         coomand.Parameters.AddWithValue(sqlparameter, parameter);
-    //     }
-    // }
     public static SqliteParameter CreateParam(SqliteCommand command, string sqlparameter){ 
         SqliteParameter createdParam = command.CreateParameter();
         createdParam.ParameterName = sqlparameter;
