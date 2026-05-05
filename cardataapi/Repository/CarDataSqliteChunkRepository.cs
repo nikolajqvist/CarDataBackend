@@ -30,7 +30,7 @@ public class CarDataSqliteChunkRepository{
                     cycletocardisParam.Value = scenario.CycleToCarDistance;
                     scenariostartParam.Value = scenario.ScenarioStart;
                     scenarioendParam.Value = scenario.ScenarioEnd;
-                    ExecuteQuery(command);
+                    await ExecuteQuery(command);
                 }
 
             }
@@ -83,7 +83,7 @@ public class CarDataSqliteChunkRepository{
                     handleyParam.Value = bikdD.HandleRotationY;
                     cubsideParam.Value = bikdD.DistanceCurbSide;
                     speedParam.Value = bikdD.Speed;
-                    ExecuteQuery(command);
+                    await ExecuteQuery(command);
                 }
             }
         }
@@ -120,7 +120,7 @@ public class CarDataSqliteChunkRepository{
                     pXParam.Value = htf.PosX;
                     pYParam.Value = htf.PosY;
                     pZParam.Value = htf.PosZ;
-                    ExecuteQuery(command);
+                    await ExecuteQuery(command);
                 }
             }
         }
@@ -144,7 +144,7 @@ public class CarDataSqliteChunkRepository{
                     userIdParam.Value = userid;
                     brakeParam1.Value = lb.LeftBraking;
                     dateParam1.Value = lb.BrakeTime;
-                    ExecuteQuery(cmd1);
+                    await ExecuteQuery(cmd1);
                 }
             }
         }
@@ -165,7 +165,7 @@ public class CarDataSqliteChunkRepository{
                 userIdParam2.Value = userid;
                 brakeParam2.Value = rb.RightBraking;
                 dateParam2.Value = rb.BrakeTime;
-                ExecuteQuery(cmd2);
+                await ExecuteQuery(cmd2);
             }
         }
     }
@@ -179,7 +179,7 @@ public class CarDataSqliteChunkRepository{
             throw new Exception(e.Message);
         }
     }
-    private void ExecuteQuery(SqliteCommand command){ 
+    private async Task ExecuteQuery(SqliteCommand command){ 
         command.ExecuteNonQuery(); 
     } 
 }
