@@ -9,7 +9,7 @@ public class CarDataSqliteChunkRepository{
     public CarDataSqliteChunkRepository(string connectionString){
         this.connectionString = connectionString;
     }
-    public async void AddScenarios(List<Scenario> scenarios, int userId)
+    public async Task AddScenarios(List<Scenario> scenarios, int userId)
     {
         try
         {
@@ -64,7 +64,7 @@ public class CarDataSqliteChunkRepository{
     //         throw new Exception(e.Message);
     //     }
     // }
-    public async void AddBikeData(List<BikeData> bikeData, int userId)
+    public async Task AddBikeData(List<BikeData> bikeData, int userId)
     {
         try
         {
@@ -92,7 +92,7 @@ public class CarDataSqliteChunkRepository{
             throw new Exception(e.Message);
         }
     }
-    public async void AddHeadTransform(List<HeadTransform> headTransforms, int userId)
+    public async Task AddHeadTransform(List<HeadTransform> headTransforms, int userId)
     {
         try
         {
@@ -129,7 +129,7 @@ public class CarDataSqliteChunkRepository{
             throw new Exception(e.Message);
         }
     }
-    public async void AddLeftBrake(List<LeftBrake> leftBrakes, int userid){
+    public async Task AddLeftBrake(List<LeftBrake> leftBrakes, int userid){
         try{
             SqliteConnection connection = new SqliteConnection(connectionString);
             using(connection){
@@ -152,7 +152,7 @@ public class CarDataSqliteChunkRepository{
             throw new Exception(e.Message);
         }
     }
-    public async void AddRigthBrake(List<RightBrake> rightBrakes, int userid){
+    public async Task AddRigthBrake(List<RightBrake> rightBrakes, int userid){
         SqliteConnection connection = new SqliteConnection(connectionString);
         using(connection){
             string sql2 = "insert into RightBrake values (null, @userId, @brake, @datetime)";
@@ -169,7 +169,7 @@ public class CarDataSqliteChunkRepository{
             }
         }
     }
-    public async void AddTimeCheck(List<TimeCheck> timeChecks)
+    public async Task AddTimeCheck(List<TimeCheck> timeChecks)
     {
         try
         {

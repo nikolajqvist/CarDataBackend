@@ -11,47 +11,47 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("logsqlitebikedata")]
-       public IActionResult PostBD([FromForm] IFormFile file){
+       public async Task<IActionResult> PostBD([FromForm] IFormFile file){
            if(file.Length == 0 || file == null) return BadRequest();
            IncomingFile incomingFile = new();
            incomingFile.newTestFile = file;
-           fileHandlerService.HandleBikeData(incomingFile);
+           await fileHandlerService.HandleBikeData(incomingFile);
            return Ok("Very nice yub");
        }
        [HttpPost]
        [Route("logsqlitescenario")]
-       public IActionResult PostScenarios([FromForm] IFormFile file){
+       public async Task<IActionResult> PostScenarios([FromForm] IFormFile file){
            if(file.Length == 0 || file == null) return BadRequest();
            IncomingFile incomingFile = new();
            incomingFile.newTestFile = file;
-           fileHandlerService.HandleScenarios(incomingFile);
+           await fileHandlerService.HandleScenarios(incomingFile);
            return Ok("Very nice yub");
        }
        [HttpPost]
        [Route("logsqlitehtf")]
-       public IActionResult PostPD([FromForm] IFormFile file){
+       public async Task<IActionResult> PostPD([FromForm] IFormFile file){
            if(file.Length == 0 || file == null) return BadRequest();
            IncomingFile incomingFile = new();
            incomingFile.newTestFile = file;
-           fileHandlerService.HandleHeadTrans(incomingFile);
+           await fileHandlerService.HandleHeadTrans(incomingFile);
            return Ok("Very nice yub");
        }
        [HttpPost]
        [Route("logsqlitearduino")]
-       public IActionResult PostArduino([FromForm] IFormFile file){
+       public async Task<IActionResult> PostArduino([FromForm] IFormFile file){
            if(file.Length == 0 || file == null) return BadRequest();
            IncomingFile incomingFile = new();
            incomingFile.newTestFile = file;
-           fileHandlerService.HandleBraking(incomingFile);
+           await fileHandlerService.HandleBraking(incomingFile);
            return Ok("Very nice yub");
        }
        [HttpPost]
        [Route("logsqlitetime")]
-       public IActionResult PostTime([FromForm] IFormFile file){
+       public async Task<IActionResult> PostTime([FromForm] IFormFile file){
            if(file.Length == 0 || file == null) return BadRequest();
            IncomingFile incomingFile = new();
            incomingFile.newTestFile = file;
-           fileHandlerService.HandleTimeCheck(incomingFile);
+           await fileHandlerService.HandleTimeCheck(incomingFile);
            return Ok("Very nice yub");
        }
     }

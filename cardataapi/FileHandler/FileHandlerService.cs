@@ -6,7 +6,7 @@ public class FileHandlerService{
     public FileHandlerService(CarDataSqliteChunkRepository carDataSqliteChunkRepository){
         this.carDataSqliteChunkRepository = carDataSqliteChunkRepository;
     }
-    public async void HandleBikeData(IncomingFile incomingFile){
+    public async Task HandleBikeData(IncomingFile incomingFile){
         if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
             throw new ArgumentNullException("Fil fejl");
         }
@@ -43,9 +43,9 @@ public class FileHandlerService{
             p.Speed = spee;
             bikeDatas.Add(p);
         }
-        carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
+        await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
     }
-    public async void HandleHeadTrans(IncomingFile incomingFile){
+    public async Task HandleHeadTrans(IncomingFile incomingFile){
         if(incomingFile == null || incomingFile.newTestFile.Length == 0){
             throw new ArgumentNullException("File fejl");
         }
@@ -88,9 +88,9 @@ public class FileHandlerService{
             htf.PosY = py;
             hTfs.Add(htf);
         }
-        carDataSqliteChunkRepository.AddHeadTransform(hTfs, id);
+        await carDataSqliteChunkRepository.AddHeadTransform(hTfs, id);
     }
-    public async void HandleScenarios(IncomingFile incomingFile){
+    public async Task HandleScenarios(IncomingFile incomingFile){
         ValidateFile(incomingFile);
         var folderpath = CreateFolderPath("userScenarios");
         var filepath = CreateFilePath(incomingFile, "userScenarios");
@@ -127,9 +127,9 @@ public class FileHandlerService{
             sce.ScenarioEnd = end;
             scenarios.Add(sce);
         }
-        carDataSqliteChunkRepository.AddScenarios(scenarios, id);
+        await carDataSqliteChunkRepository.AddScenarios(scenarios, id);
     }
-    public async void HandleTimeCheck(IncomingFile incomingFile){
+    public async Task HandleTimeCheck(IncomingFile incomingFile){
         ValidateFile(incomingFile);
         var folderpath = CreateFolderPath("userTimeCheck");
         var filepath = CreateFilePath(incomingFile, "userTimeCheck");
@@ -153,9 +153,9 @@ public class FileHandlerService{
             tC.Time = time;
             timeChecks.Add(tC);
         }
-        carDataSqliteChunkRepository.AddTimeCheck(timeChecks);
+        await carDataSqliteChunkRepository.AddTimeCheck(timeChecks);
     }
-    public async void HandleBraking(IncomingFile incomingFile){
+    public async Task HandleBraking(IncomingFile incomingFile){
         ValidateFile(incomingFile);
         string folderpath = CreateFolderPath("breakingdata");
         string filepath = CreateFilePath(incomingFile, "breakingdata");
@@ -183,8 +183,8 @@ public class FileHandlerService{
             lB.BrakeTime = DateTime.Parse(chunk[2]);
             leftBrakes.Add(lB);
             rightBrakes.Add(rB);
-            carDataSqliteChunkRepository.AddRigthBrake(rightBrakes, userid);
-            carDataSqliteChunkRepository.AddLeftBrake(leftBrakes, userid);
+            await carDataSqliteChunkRepository.AddRigthBrake(rightBrakes, userid);
+            await carDataSqliteChunkRepository.AddLeftBrake(leftBrakes, userid);
         }
     }
     // public async void HandlePulseData(IncomingFile incomingFile){ if(incomingFile == null || incomingFile.newTestFile.Length == 0){ throw new ArgumentNullException("File fejl");
