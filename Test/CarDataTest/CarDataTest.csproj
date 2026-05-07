@@ -8,11 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <PackageReference Include="MSTest" Version="4.0.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.2.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.2.1" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,9 +24,9 @@
       <Reference Include="cardataapi">
           <HintPath>../CarDataTest/DLL/cardataapi.dll</HintPath>
       </Reference>
-  <Reference Include="cardatalib">
-      <HintPath>../CarDataTest/DLL/cardatalib.dll</HintPath>
-  </Reference>
+      <Reference Include="cardatalib">
+          <HintPath>../CarDataTest/DLL/cardatalib.dll</HintPath>
+      </Reference>
   </ItemGroup>
 
 </Project>

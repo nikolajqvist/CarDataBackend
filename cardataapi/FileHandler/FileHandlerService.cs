@@ -1,10 +1,13 @@
 namespace cardataapi;
+using System.Globalization;
 using CARDataLib;
 
 public class FileHandlerService{
     private CarDataSqliteChunkRepository carDataSqliteChunkRepository;
-    public FileHandlerService(CarDataSqliteChunkRepository carDataSqliteChunkRepository){
+    private CarDataChunkRepository carDataChunkRepository;
+    public FileHandlerService(CarDataSqliteChunkRepository carDataSqliteChunkRepository, CarDataChunkRepository carDataChunkRepository){
         this.carDataSqliteChunkRepository = carDataSqliteChunkRepository;
+        this.carDataChunkRepository = carDataChunkRepository;
     }
     public async Task HandleBikeData(IncomingFile incomingFile){
         if(incomingFile.newTestFile == null || incomingFile.newTestFile.Length == 0){
@@ -18,15 +21,16 @@ public class FileHandlerService{
         using(stream){
             await incomingFile.newTestFile.CopyToAsync(stream);
         }
-        string fileContent = await System.IO.File.ReadAllTextAsync(filepath);
+        string fileContent = System.IO.File.ReadAllText(filepath);
         if(fileContent.Length == 0 && fileContent == null)
             throw new ArgumentNullException("Læse fejl");
-        var stringSplit = fileContent.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Skip(1);
-        char firstline = fileContent[0];
-        string stringline = firstline.ToString();
-        int.TryParse(stringline, out int id);
-        
-        var chunks = stringSplit.Chunk(3);
+        var stringSplit = fileContent.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries);
+        string firstLine = stringSplit[0];
+        int.TryParse(firstLine, out int id);
+
+        var chunkSplit = stringSplit.Skip(1);
+
+        var chunks = chunkSplit.Chunk(3);
 
         List<BikeData> bikeDatas = new List<BikeData>();
 
@@ -34,16 +38,17 @@ public class FileHandlerService{
             if(chunk.Length < 3) {
                 throw new ArgumentOutOfRangeException("Chunk skal minimum være 3");
             };
-            var yRot = double.Parse(chunk[0]);
-            double curbSide = double.Parse(chunk[1]);
-            double spee = double.Parse(chunk[2]);
+            double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
+            double curbSide = double.Parse(chunk[1], CultureInfo.InvariantCulture);
+            double spee = double.Parse(chunk[2], CultureInfo.InvariantCulture);
             BikeData p = new BikeData();
             p.HandleRotationY = yRot;
             p.DistanceCurbSide = curbSide;
             p.Speed = spee;
             bikeDatas.Add(p);
         }
-        await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
+        // await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
+        await carDataChunkRepository.AddBikeData(bikeDatas, id);
     }
     public async Task HandleHeadTrans(IncomingFile incomingFile){
         if(incomingFile == null || incomingFile.newTestFile.Length == 0){
@@ -58,28 +63,35 @@ public class FileHandlerService{
             await incomingFile.newTestFile.CopyToAsync(stream);
         }
         string fileContent = System.IO.File.ReadAllText(filepath);
-        if(fileContent.Length == 0 || fileContent == null){
+        if(string.IsNullOrEmpty(fileContent)){
             throw new ArgumentNullException("Intet indhold");
         }
-        char firstLine = fileContent[0];
-        var contentSplit = fileContent.Split(new[] {"\n", "\n", "\n", "\n", "\n", "\n", "\n"}, StringSplitOptions.None).Skip(1);
-        string toParse = firstLine.ToString();
-        int.TryParse(toParse, out int id);
-        
-        var chunks = contentSplit.Chunk(7);
+        var contentSplit = fileContent.Split(new[] {"\r\n", "\n", "\r"}, StringSplitOptions.RemoveEmptyEntries);
+        string firstLine = contentSplit[0];
+        int.TryParse(firstLine, out int id);
+        var chunkSplit = contentSplit.Skip(1);
+
+        var chunks = chunkSplit.Chunk(7);
 
         List<HeadTransform> hTfs = new List<HeadTransform>();
 
         foreach(string[] chunk in chunks){
             if(chunk.Length < 7)
                 throw new ArgumentOutOfRangeException("Chunk skal minimum være 7");
-            double rw = double.Parse(chunk[0]);
-            double rz = double.Parse(chunk[1]);
-            double rx = double.Parse(chunk[2]);
-            double ry = double.Parse(chunk[3]);
-            double px = double.Parse(chunk[4]);
-            double py = double.Parse(chunk[5]);
-            double pz = double.Parse(chunk[6]);
+            double rw = double.Parse(chunk[0], CultureInfo.InvariantCulture);
+            double rz = double.Parse(chunk[1], CultureInfo.InvariantCulture);
+            double rx = double.Parse(chunk[2], CultureInfo.InvariantCulture);
+            double ry = double.Parse(chunk[3], CultureInfo.InvariantCulture);
+            double px = double.Parse(chunk[4], CultureInfo.InvariantCulture);
+            double py = double.Parse(chunk[5], CultureInfo.InvariantCulture);
+            double pz = double.Parse(chunk[6], CultureInfo.InvariantCulture);
+            // double.TryParse(chunk[0], out double rw, CultureInfo.InvariantCulture);
+            // double.TryParse(chunk[1], out double rz);
+            // double.TryParse(chunk[2], out double rx);
+            // double.TryParse(chunk[3], out double ry);
+            // double.TryParse(chunk[4], out double pz);
+            // double.TryParse(chunk[5], out double px);
+            // double.TryParse(chunk[6], out double py);
             HeadTransform htf = new HeadTransform();
             htf.RotW = rw;
             htf.RotZ = rz;
@@ -90,13 +102,14 @@ public class FileHandlerService{
             htf.PosY = py;
             hTfs.Add(htf);
         }
-        await carDataSqliteChunkRepository.AddHeadTransform(hTfs, id);
+        // await carDataSqliteChunkRepository.AddHeadTransform(hTfs, id);
+        await carDataChunkRepository.AddHeadTransform(hTfs, id);
     }
     public async Task HandleScenarios(IncomingFile incomingFile){
         ValidateFile(incomingFile);
         var folderpath = CreateFolderPath("userScenarios");
         var filepath = CreateFilePath(incomingFile, "userScenarios");
-        
+
         CreateDirectory(folderpath);
 
         FileStream stream = new FileStream(filepath, FileMode.Create);
@@ -107,29 +120,30 @@ public class FileHandlerService{
         if(fileContent.Length == 0 || fileContent == null){
             throw new ArgumentNullException("Intet indhold");
         }
-        var splitContent = fileContent.Split(new[] {"\n", "\n", "\n", "\n", "\n"}, StringSplitOptions.None).Skip(1);
-        
-        string firstLine = fileContent[0].ToString();
+        var splitContent = fileContent.Split(new[] {"\r\n", "\n", "\r"}, StringSplitOptions.RemoveEmptyEntries);
+
+        string firstLine = splitContent[0];
         int.TryParse(firstLine, out int id);
 
-        var chunks = splitContent.Chunk(5);
+        var chunkSplit = splitContent.Skip(1);
+        var chunks = chunkSplit.Chunk(4);
 
         List<Scenario> scenarios = new List<Scenario>();
 
         foreach(string[] chunk in chunks){
-            if(chunk.Length < 5) throw new ArgumentOutOfRangeException("Chunk er for lille");
-            string sceName = chunk[1];
-            double cycToCarDist = double.Parse(chunk[2]);
-            DateTime start = DateTime.Parse(chunk[3]);
-            DateTime end = DateTime.Parse(chunk[4]);
+            if(chunk.Length < 4) throw new ArgumentOutOfRangeException("Chunk er for lille");
             Scenario sce = new Scenario();
+            string sceName = chunk[0].ToString();
+            double cycToCarDist = double.Parse(chunk[1], CultureInfo.InvariantCulture);
+            DateTime start = DateTime.Parse(chunk[2]);
+            DateTime end = DateTime.Parse(chunk[3]);
             sce.ScenarioName = sceName;
             sce.CycleToCarDistance = cycToCarDist;
             sce.ScenarioStart = start;
             sce.ScenarioEnd = end;
             scenarios.Add(sce);
         }
-        await carDataSqliteChunkRepository.AddScenarios(scenarios, id);
+        await carDataChunkRepository.AddScenarios(scenarios, id);
     }
     // public async Task HandleTimeCheck(IncomingFile incomingFile){
     //     ValidateFile(incomingFile);
@@ -166,14 +180,14 @@ public class FileHandlerService{
 
         string fileContent = ReadFile(filepath);
         ValidateContent(fileContent);
-        var splitString = fileContent.Split(new[] {"\n", "\n", "\n"}, StringSplitOptions.None).Skip(1);
-        string firstLine = fileContent[0].ToString();
+        var splitString = fileContent.Split(new[] {"\n", "\n", "\n"}, StringSplitOptions.None);
+        string firstLine = splitString[0];
         int.TryParse(firstLine, out int userid);
         if(firstLine.Length == 0 || firstLine == null){
             throw new ArgumentOutOfRangeException("User Id er 0");
         }
-
-        var chunks = splitString.Chunk(3);
+        var chunkSplit = splitString.Skip(1);
+        var chunks = chunkSplit.Chunk(3);
         List<LeftBrake> leftBrakes = new List<LeftBrake>();
         List<RightBrake> rightBrakes = new List<RightBrake>();
         foreach(var chunk in chunks){

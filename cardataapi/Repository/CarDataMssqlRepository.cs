@@ -97,31 +97,31 @@ public class CarDataMssqlRepository{
     //         throw new Exception(e.Message);
     //         }
     // }
-    // public User AddFirstInstanceOfUser(User user)
-    // {
-    //     try
-    //     {
-    //         using (SqlConnection connection = new SqlConnection(connectionString))
-    //         {
-    //             connection.Open();
-    //
-    //             string sql = "INSERT INTO Users (TestPersonNumber, Age, Gender) VALUES (@testpersonnumber, @age, @gender)";
-    //
-    //             using (SqlCommand command = new SqlCommand(sql, connection))
-    //             {
-    //                 HelperMethods.BindValueInt(command, "@testpersonnumber", user.TestPersonNumber);
-    //                 HelperMethods.BindValueInt(command, "@age", user.Age);
-    //                 HelperMethods.BindValueString(command, "@gender", user.Gender);
-    //                 command.ExecuteNonQuery();
-    //             }
-    //         }
-    //         return user;
-    //     }
-    //     catch (SqlException e)
-    //     {
-    //         throw new Exception(e.Message);
-    //     }
-    // }
+    public User AddFirstInstanceOfUser(User user)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string sql = "INSERT INTO Users (TestPersonNumber, Age, Gender) VALUES (@testpersonnumber, @age, @gender)";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    HelperMethods.BindValueInt(command, "@testpersonnumber", user.TestPersonNumber);
+                    HelperMethods.BindValueInt(command, "@age", user.Age);
+                    HelperMethods.BindValueString(command, "@gender", user.Gender);
+                    command.ExecuteNonQuery();
+                }
+            }
+            return user;
+        }
+        catch (SqlException e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
     // public Session AddSession(int userId)
     // {
     //     try

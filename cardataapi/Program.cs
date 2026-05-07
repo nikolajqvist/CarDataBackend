@@ -7,6 +7,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
+
+        string? cardatadbsqlite = builder.Configuration.GetConnectionString("SqliteDb");
+        if(cardatadbsqlite == null)
+        {
+            throw new Exception("Databasefejl");
+        }
         string? cardatadb = builder.Configuration.GetConnectionString("Default");
         if(cardatadb == null)
         {
@@ -14,8 +20,8 @@ public class Program
         }
         builder.Services.AddSingleton<CarDataMssqlRepository>(new CarDataMssqlRepository(cardatadb));
         builder.Services.AddSingleton<CarDataChunkRepository>(new CarDataChunkRepository(cardatadb));
-        builder.Services.AddSingleton<CarDataSqliteRepository>(new CarDataSqliteRepository(cardatadb));
-        builder.Services.AddSingleton<CarDataSqliteChunkRepository>(new CarDataSqliteChunkRepository(cardatadb));
+        builder.Services.AddSingleton<CarDataSqliteRepository>(new CarDataSqliteRepository(cardatadbsqlite));
+        builder.Services.AddSingleton<CarDataSqliteChunkRepository>(new CarDataSqliteChunkRepository(cardatadbsqlite));
 
         // builder.WebHost.UseUrls("https://0.0.0.0:5000");
 
