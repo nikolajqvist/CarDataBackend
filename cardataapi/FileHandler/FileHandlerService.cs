@@ -47,7 +47,7 @@ public class FileHandlerService{
             p.Speed = spee;
             bikeDatas.Add(p);
         }
-        // await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
+        await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
         await carDataChunkRepository.AddBikeData(bikeDatas, id);
     }
     public async Task HandleHeadTrans(IncomingFile incomingFile){
@@ -102,7 +102,7 @@ public class FileHandlerService{
             htf.PosY = py;
             hTfs.Add(htf);
         }
-        // await carDataSqliteChunkRepository.AddHeadTransform(hTfs, id);
+        await carDataSqliteChunkRepository.AddHeadTransform(hTfs, id);
         await carDataChunkRepository.AddHeadTransform(hTfs, id);
     }
     public async Task HandleScenarios(IncomingFile incomingFile){
@@ -143,6 +143,7 @@ public class FileHandlerService{
             sce.ScenarioEnd = end;
             scenarios.Add(sce);
         }
+        await carDataSqliteChunkRepository.AddScenarios(scenarios, id);
         await carDataChunkRepository.AddScenarios(scenarios, id);
     }
     // public async Task HandleTimeCheck(IncomingFile incomingFile){
@@ -201,6 +202,8 @@ public class FileHandlerService{
             lB.BrakeTime = DateTime.Parse(chunk[2]);
             leftBrakes.Add(lB);
             rightBrakes.Add(rB);
+            await carDataSqliteChunkRepository.AddRigthBrake(rightBrakes, userid);
+            await carDataSqliteChunkRepository.AddLeftBrake(leftBrakes, userid);
             await carDataSqliteChunkRepository.AddRigthBrake(rightBrakes, userid);
             await carDataSqliteChunkRepository.AddLeftBrake(leftBrakes, userid);
         }

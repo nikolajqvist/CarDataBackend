@@ -17,8 +17,9 @@ public class CarDataSqliteChunkRepository{
             using (connection)
             {
                 connection.Open();
-                string sql = "insert into scenario values (null, @userId, @scenarioname, @cycletocardis, @scenariostart, @scenarioend)";
-                SqliteCommand command = new SqliteCommand(sql, connection);
+                string sql = "insert into Scenario (UserId, ScenarioName, CycleToCarDistance, ScenarioStart, ScenarioEnd) values (@userId, @scenarioname, @cycletocardis, @scenariostart, @scenarioend)";
+                SqliteCommand command = connection.CreateCommand(); 
+                command.CommandText = sql;
                 SqliteParameter userIdParam = HelperMethods.CreateParam(command, "@userId");
                 SqliteParameter scenarionameParam = HelperMethods.CreateParam(command, "@scenarioname");
                 SqliteParameter cycletocardisParam = HelperMethods.CreateParam(command, "@cycletocardis");
@@ -40,30 +41,31 @@ public class CarDataSqliteChunkRepository{
             throw new Exception(e.Message);
         }
     }
-    // public async void AddPulseData(List<PulseData> pulseData, int userId)
-    // {
-    //     try
-    //     {
-    //         SqliteConnection connection = new SqliteConnection(connectionString);
-    //         using (connection)
-    //         {
-    //             connection.Open();
-    //             string sql = "insert into pulseData values (null,@userId, @pulse)";
-    //             SqliteCommand command = new SqliteCommand(sql, connection);
-    //             SqliteParameter userIdParam = HelperMethods.CreateParam(command, "@userId");
-    //             SqliteParameter pulseParam = HelperMethods.CreateParam(command, "@pulse");
-    //             foreach(PulseData pulse in pulseData){
-    //                 userIdParam.Value = userId;
-    //                 pulseParam.Value = pulse.Pulse;
-    //                  await command.ExecuteNonQueryAsync();
-    //             }
-    //         }
-    //     }
-    //     catch (SqliteException e)
-    //     {
-    //         throw new Exception(e.Message);
-    //     }
-    // }
+    public async void AddPulseData(List<PulseData> pulseData, int userId)
+    {
+        try
+        {
+            SqliteConnection connection = new SqliteConnection(connectionString);
+            using (connection)
+            {
+                connection.Open();
+                string sql = "insert into PulseData (UserId, Pulse) values (@userId, @pulse)";
+                SqliteCommand command = connection.CreateCommand(); 
+                command.CommandText = sql;
+                SqliteParameter userIdParam = HelperMethods.CreateParam(command, "@userId");
+                SqliteParameter pulseParam = HelperMethods.CreateParam(command, "@pulse");
+                foreach(PulseData pulse in pulseData){
+                    userIdParam.Value = userId;
+                    pulseParam.Value = pulse.Pulse;
+                     await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+        catch (SqliteException e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
     public async Task AddBikeData(List<BikeData> bikeData, int userId)
     {
         try
@@ -71,7 +73,7 @@ public class CarDataSqliteChunkRepository{
             SqliteConnection connection = new SqliteConnection(connectionString);
             using(connection){
                 connection.Open();
-                string sql = "insert into bikeData values (null, @userid, @handley, @discurb, @speed)";
+                string sql = "insert into BikeData (UserId, HandleRotationY, DistanceCurbSide, Speed) values (@userId, @handley, @discurb, @speed)";
                 SqliteCommand command = connection.CreateCommand(); 
                 command.CommandText = sql;
                 SqliteParameter userIdParam = HelperMethods.CreateParam(command, "@userId");
@@ -99,7 +101,7 @@ public class CarDataSqliteChunkRepository{
             SqliteConnection connection = new SqliteConnection(connectionString);
             using(connection){
                 connection.Open();
-                string sql = "insert into HeadTransform values(null, @userId, @rotW, @rotZ, @rotY, @rotX, @posX, @posY, @posZ";
+                string sql = "insert into HeadTransform (UserId, RotW, RotZ, RotY, RotX, PosX, PosY, PosZ) values (@userId, @rotW, @rotZ, @rotY, @rotX, @posX, @posY, @posZ)";
 
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = sql;
@@ -134,7 +136,7 @@ public class CarDataSqliteChunkRepository{
             SqliteConnection connection = new SqliteConnection(connectionString);
             using(connection){
                 connection.Open();
-                string sql = "insert into LeftBrake values (null, @userId, @brake, @datetime)";
+                string sql = "insert into LeftBrake (UserId, LeftBrake, BrakeTime) values (@userId, @brake, @datetime)";
                 SqliteCommand cmd1 = connection.CreateCommand();
                 cmd1.CommandText = sql;
                 SqliteParameter userIdParam = HelperMethods.CreateParam(cmd1, "@userId");
@@ -156,7 +158,7 @@ public class CarDataSqliteChunkRepository{
         try{
             SqliteConnection connection = new SqliteConnection(connectionString);
             using(connection){
-                string sql2 = "insert into RightBrake values (null, @userId, @brake, @datetime)";
+                string sql2 = "insert into RightBrake (UserId, RightBrake, BrakeTime) values (@userId, @brake, @datetime)";
                 SqliteCommand cmd2 = connection.CreateCommand();
                 cmd2.CommandText = sql2;
                 SqliteParameter userIdParam2 = HelperMethods.CreateParam(cmd2, "@userId");
