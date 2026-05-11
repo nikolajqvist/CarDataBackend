@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using CARDataLib;
 namespace cardataapi.Controllers{
 
     [Route("api/[controller]")]
@@ -6,8 +7,18 @@ namespace cardataapi.Controllers{
     public class CarDataSqliteController : ControllerBase
     {
        private FileHandlerService fileHandlerService;
-       public CarDataSqliteController(FileHandlerService fileHandlerService){
+       private CarDataSqliteRepository carDataSqliteRepository;
+       public CarDataSqliteController(FileHandlerService fileHandlerService, CarDataSqliteRepository carDataSqliteRepository){
            this.fileHandlerService = fileHandlerService;
+           this.carDataSqliteRepository = carDataSqliteRepository;
+       }
+       [HttpGet]
+       public IActionResult GetUser([FromHeader] int userId){
+           User u = carDataSqliteRepository.GetUser(userId);
+           if(userId == 0){
+               return BadRequest();
+            }
+           return Ok(u);
        }
        [HttpPost]
        [Route("logsqlitebikedata")]
