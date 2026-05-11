@@ -23,55 +23,48 @@ public sealed class ChunkTest{
         this.fHService = new FileHandlerService(chunkSqliteRepository, chunkRepository);
     }
     [TestMethod]
-        public async Task InsertIntoHTFChunk()
-        {
-            string path = @"C:\Users\nqvis\Desktop\Test.txt";
+    public void FirstInstanceOfUserTest(){
 
-            var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-
-            IFormFile file = new FormFile(
-                    stream,
-                    0,
-                    stream.Length,
-                    "newTestFile",
-                    Path.GetFileName(path)
-                    );
-
-            var incomingFile = new IncomingFile
-            {
-                newTestFile = file
-            };
-
-
-            // Act
-            await fHService.HandleHeadTrans(incomingFile);
-            Assert.IsNotNull(path);
-        }
+    }
     [TestMethod]
-        public async Task InsertIntoBikeDataChunk()
+    public async Task InsertIntoHTFChunk()
+    {
+        string path = @"C:\Users\nqvis\Desktop\Test.txt";
+
+        var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+
+        IFormFile file = new FormFile( stream, 0, stream.Length, "newTestFile", Path.GetFileName(path));
+
+        var incomingFile = new IncomingFile { newTestFile = file };
+        // Act
+        await fHService.HandleHeadTrans(incomingFile);
+        Assert.IsNotNull(path);
+    }
+    [TestMethod]
+    public async Task InsertIntoBikeDataChunk()
+    {
+        string path = @"C:\Users\nqvis\Desktop\Test1.txt";
+
+        var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+
+        IFormFile file = new FormFile(
+                stream,
+                0,
+                stream.Length,
+                "newTestFile",
+                Path.GetFileName(path)
+                );
+
+        var incomingFile = new IncomingFile
         {
-            string path = @"C:\Users\nqvis\Desktop\Test1.txt";
-
-            var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-
-            IFormFile file = new FormFile(
-                    stream,
-                    0,
-                    stream.Length,
-                    "newTestFile",
-                    Path.GetFileName(path)
-                    );
-
-            var incomingFile = new IncomingFile
-            {
-                newTestFile = file
-            };
+            newTestFile = file
+        };
 
 
-            // Act
-            await fHService.HandleBikeData(incomingFile);
-            Assert.IsNotNull(path);
-        }
+        // Act
+        await fHService.HandleBikeData(incomingFile);
+        Assert.IsNotNull(path);
+    }
     [TestMethod]
     public async Task InsertIntoScenarioChunk()
     {

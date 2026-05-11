@@ -11,19 +11,34 @@ public class CarDataSqliteRepository{
     // private void ExecuteQuery(SqliteCommand command){
     //     command.ExecuteNonQuery();
     // }
-    // public void FirstInstanceOfUser(User user){
-    //     SqliteConnection connection = new SqliteConnection(connectionString);
-    //     using(connection){
-    //         connection.Open();
-    //         string sql = "insert into Users values(@id, @age, @gender)";
-    //
-    //         SqliteCommand comm = new SqliteCommand(sql, connection);
-    //         HelperMethods.BindSqliteValueInt(comm, "@id", user.TestPersonNumber);
-    //         HelperMethods.BindSqliteValueInt(comm, "@age", user.Age);
-    //         HelperMethods.BindSqliteValueString(comm, "@gender", user.Gender);
-    //         ExecuteQuery(comm);
-    //     }
-    // }
+    public void FirstInstanceOfUser(User user){
+        SqliteConnection connection = new SqliteConnection(connectionString);
+        using(connection){
+            connection.Open();
+            string sql = "insert into Users values(@id, @age, @gender)";
+
+            SqliteCommand comm = new SqliteCommand(sql, connection);
+            HelperMethods.BindSqliteValueInt(comm, "@id", user.TestPersonNumber);
+            HelperMethods.BindSqliteValueInt(comm, "@age", user.Age);
+            HelperMethods.BindSqliteValueString(comm, "@gender", user.Gender);
+            comm.ExecuteNonQuery();
+        }
+    }
+    public User GetUser(int id){
+        SqliteConnection connection = HelperMethods.NewSqliteConnection(connectionString);
+        using(connection){
+            connection.Open();
+            string sql = "Select * from Users where (Id = @id)";
+            SqliteCommand comm = new SqliteCommand(sql, connection);
+            HelperMethods.BindSqliteValueInt(comm, "@id", id);
+            SqliteDataReader reader = comm.ExecuteReader();
+            if(reader.Read()){
+                User u = new User(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2));
+                return u;
+            }
+            return null;
+        }
+    }
     // public void AddBikeData(BikeData bikeData, int userId){
     //     SqliteConnection connection = new SqliteConnection(connectionString);
     //     using(connection){
