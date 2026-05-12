@@ -44,19 +44,13 @@ public class ByteHandlerService {
         foreach(var chunk in chunks){
         if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
-            // double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
-            // double curb = double.Parse(chunk[1]);
-            // double speed = double.Parse(chunk[2]);
-            Console.WriteLine(chunk[2]);
-            double.TryParse(chunk[0], out double yRot);
-            double.TryParse(chunk[1], out double curb);
-            double.TryParse(chunk[2], out double speed);
-            Console.WriteLine("YROT: " + yRot + " Curbshiet: " + curb + " SPeed: " + speed);
+            double yRot = double.Parse(chunk[0]);
+            double curb = double.Parse(chunk[1]);
+            double speed = double.Parse(chunk[2]);
             BikeData b = new BikeData();
             b.HandleRotationY = yRot;
             b.DistanceCurbSide = curb;
             b.Speed = speed;
-            Console.WriteLine("YROT: " + b.HandleRotationY + " Curbshiet: " + b.DistanceCurbSide + " SPeed: " + b.Speed);
             bikeDatas.Add(b);
         }
         await carDataChunkRepository.AddBikeData(bikeDatas, id);
