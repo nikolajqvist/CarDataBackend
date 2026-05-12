@@ -21,7 +21,7 @@ public class ByteHandlerService {
         if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
             string scename = chunk[0].ToString();
-            double cyclToDis = double.Parse(chunk[1], CultureInfo.InvariantCulture);
+            double cyclToDis = double.Parse(chunk[1]);
             DateTime start = DateTime.Parse(chunk[2]);
             DateTime end = DateTime.Parse(chunk[3]);
             Scenario sce = new Scenario();
@@ -44,14 +44,18 @@ public class ByteHandlerService {
         foreach(var chunk in chunks){
         if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
-            double yRot = double.Parse(chunk[0], CultureInfo.CurrentCulture);
-            double curb = double.Parse(chunk[1], CultureInfo.CurrentCulture);
-            double speed = double.Parse(chunk[2], CultureInfo.CurrentCulture);
-            Console.WriteLine("YROT: " + yRot + "Curbshiet: " + curb + "SPeed: " + speed);
+            // double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
+            // double curb = double.Parse(chunk[1]);
+            // double speed = double.Parse(chunk[2]);
+            double.TryParse(chunk[0], out double yRot);
+            double.TryParse(chunk[1], out double curb);
+            double.TryParse(chunk[2], out double speed);
+            Console.WriteLine("YROT: " + yRot + " Curbshiet: " + curb + " SPeed: " + speed);
             BikeData b = new BikeData();
             b.HandleRotationY = yRot;
             b.DistanceCurbSide = curb;
             b.Speed = speed;
+            Console.WriteLine("YROT: " + b.HandleRotationY + " Curbshiet: " + b.DistanceCurbSide + " SPeed: " + b.Speed);
             bikeDatas.Add(b);
         }
         await carDataChunkRepository.AddBikeData(bikeDatas, id);
@@ -67,13 +71,13 @@ public class ByteHandlerService {
         foreach(var chunk in chunks){
             if(chunk.Length <= 0) continue;
             if(chunk.Length < 7) throw new ArgumentOutOfRangeException("Chunk skal være minimum 7");
-            double rw = double.Parse(chunk[0], CultureInfo.InvariantCulture);
-            double rz = double.Parse(chunk[1], CultureInfo.InvariantCulture);
-            double rx = double.Parse(chunk[2], CultureInfo.InvariantCulture);
-            double ry = double.Parse(chunk[3], CultureInfo.InvariantCulture);
-            double pz = double.Parse(chunk[4], CultureInfo.InvariantCulture);
-            double px = double.Parse(chunk[5], CultureInfo.InvariantCulture);
-            double py = double.Parse(chunk[6], CultureInfo.InvariantCulture);
+            double rw = double.Parse(chunk[0]);
+            double rz = double.Parse(chunk[1]);
+            double rx = double.Parse(chunk[2]);
+            double ry = double.Parse(chunk[3]);
+            double pz = double.Parse(chunk[4]);
+            double px = double.Parse(chunk[5]);
+            double py = double.Parse(chunk[6]);
             HeadTransform htf = new HeadTransform();
             htf.RotW = rw;
             htf.RotZ = rz;
