@@ -32,7 +32,6 @@ namespace cardataapi.Controllers{
            // await fileHandlerService.HandleBikeData(incomingFile);
            // if(string.IsNullOrEmpty(incomingText)) return BadRequest();
            // await stringHandlerService.AddBikeData(incomingText);
-           if(incoming.Length == 0 || incoming == null) return BadRequest();
            using var ms = new MemoryStream();
            await Request.Body.CopyToAsync(ms);
 
