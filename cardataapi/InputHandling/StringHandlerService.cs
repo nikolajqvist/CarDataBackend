@@ -8,11 +8,6 @@ public class StringHandlerService{
     public StringHandlerService(CarDataSqliteChunkRepository carDataSqliteChunkRepository){
         this.carDataSqliteChunkRepository = carDataSqliteChunkRepository;
     }
-    private void ValidateByteArray(byte[] tovalidate){
-        if(tovalidate.Length == 0 || tovalidate == null){
-            throw new ArgumentNullException("Intet i array");
-        }
-    }
     public async Task AddByteArray(byte[] barray){
         ValidateByteArray(barray);
         string fromByteToString = Encoding.ASCII.GetString(barray);
@@ -94,5 +89,10 @@ public class StringHandlerService{
         string firstLine = splitText[0];
         int.TryParse(firstLine, out int id);
         return id;
+    }
+    private void ValidateByteArray(byte[] tovalidate){ 
+        if(tovalidate.Length == 0 || tovalidate == null){ 
+            throw new ArgumentNullException("Intet i array"); 
+        } 
     }
 }
