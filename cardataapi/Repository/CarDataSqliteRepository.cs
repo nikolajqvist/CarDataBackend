@@ -28,7 +28,7 @@ public class CarDataSqliteRepository{
         SqliteConnection connection = HelperMethods.NewSqliteConnection(connectionString);
         using(connection){
             connection.Open();
-            string sql = "Select * from Users where (Id = @id)";
+            string sql = "Select * from Users where (TestPersonNumber = @id)";
             SqliteCommand comm = new SqliteCommand(sql, connection);
             HelperMethods.BindSqliteValueInt(comm, "@id", id);
             SqliteDataReader reader = comm.ExecuteReader();
