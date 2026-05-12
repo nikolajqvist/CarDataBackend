@@ -17,6 +17,7 @@ public class StringHandlerService{
         var chunks = splitString.Skip(1).Chunk(3);
         List<BikeData> bikeDatas = new List<BikeData>();
         foreach(var chunk in chunks){
+            if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
             double yRot = double.Parse(chunk[0]);
             double curb = double.Parse(chunk[1]);
