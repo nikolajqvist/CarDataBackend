@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CARDataLib;
 namespace cardataapi.Controllers{
 
-    [Route("api/[controller]")]
+    [Route("api/car/")]
     [ApiController]
     public class CarDataSqliteController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace cardataapi.Controllers{
            return Ok(u);
        }
        [HttpPost]
-       [Route("logsqlitebikedata")]
+       [Route("logbikedata")]
        public async Task<IActionResult> PostBD([FromBody] string incomingText){
            // if(file.Length == 0 || file == null) return BadRequest();
            // IncomingFile incomingFile = new();
