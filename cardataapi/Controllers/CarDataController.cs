@@ -1,19 +1,19 @@
-using CARDataLib;
-using System.IO;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Data.Sqlite;
-using System.Reflection.Metadata;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace cardataapi.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CarDataController : ControllerBase
-    {
+// using CARDataLib;
+// using System.IO;
+// using System.Text;
+// using Microsoft.AspNetCore.Mvc;
+// using Microsoft.Data.SqlClient;
+// using Microsoft.Data.Sqlite;
+// using System.Reflection.Metadata;
+//
+// // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+//
+// namespace cardataapi.Controllers
+// {
+//     [Route("api/[controller]")]
+//     [ApiController]
+//     public class CarDataController : ControllerBase
+//     {
         // private CarDataMssqlRepository carDataRepository;
         // private CarDataChunkRepository chunkRepository;
         // private CarDataSqliteRepository carDataSqliteRepository;
@@ -220,6 +220,6 @@ namespace cardataapi.Controllers
         //     //Mangler resten af indlæsningen.
         //     return Ok(file);
         // }
-    }
-}
+//     }
+// }
 
