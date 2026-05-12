@@ -24,7 +24,7 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("logbikedata")]
-       public async Task<IActionResult> PostBD([FromBody] string incomingText){
+       public async Task<IActionResult> PostBD(string incomingText){
            // if(file.Length == 0 || file == null) return BadRequest();
            // IncomingFile incomingFile = new();
            // incomingFile.newTestFile = file;
