@@ -14,12 +14,13 @@ namespace cardataapi.Controllers{
            this.stringHandlerService = stringHandlerService;
            this.carDataSqliteRepository = carDataSqliteRepository;
        }
-      [HttpGet]
+       [HttpGet]
+       [Route("{userId}")]
        public IActionResult GetUser(int userId){
            User u = carDataSqliteRepository.GetUser(userId);
            if(userId == 0){
                return BadRequest();
-            }
+           }
            return Ok(u);
        }
        [HttpPost]
