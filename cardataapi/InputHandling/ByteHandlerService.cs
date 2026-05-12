@@ -7,7 +7,7 @@ public class ByteHandlerService {
     public ByteHandlerService(CarDataSqliteChunkRepository carDataChunkRepository){
         this.carDataChunkRepository = carDataChunkRepository;
     }
-    public async Task AddByteArray(byte[] unityarray){
+    public async Task ByteBikeData(byte[] unityarray){
         ValidateByteArray(unityarray);
         string fromByteToString = Encoding.UTF8.GetString(unityarray);
         string[] splitString = fromByteToString.Split("|");
