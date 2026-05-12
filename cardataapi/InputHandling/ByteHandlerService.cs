@@ -1,4 +1,5 @@
 namespace cardataapi;
+using System.Globalization;
 using CARDataLib;
 using System.Text;
 
@@ -20,7 +21,7 @@ public class ByteHandlerService {
         if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
             string scename = chunk[0].ToString();
-            double cyclToDis = double.Parse(chunk[1]);
+            double cyclToDis = double.Parse(chunk[1], CultureInfo.InvariantCulture);
             DateTime start = DateTime.Parse(chunk[2]);
             DateTime end = DateTime.Parse(chunk[3]);
             Scenario sce = new Scenario();
@@ -43,9 +44,9 @@ public class ByteHandlerService {
         foreach(var chunk in chunks){
         if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
-            double yRot = double.Parse(chunk[0]);
-            double curb = double.Parse(chunk[1]);
-            double speed = double.Parse(chunk[2]);
+            double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
+            double curb = double.Parse(chunk[1], CultureInfo.InvariantCulture);
+            double speed = double.Parse(chunk[2], CultureInfo.InvariantCulture);
             BikeData b = new BikeData();
             b.HandleRotationY = yRot;
             b.DistanceCurbSide = curb;
@@ -65,13 +66,13 @@ public class ByteHandlerService {
         foreach(var chunk in chunks){
             if(chunk.Length <= 0) continue;
             if(chunk.Length < 7) throw new ArgumentOutOfRangeException("Chunk skal være minimum 7");
-            double.TryParse(chunk[0], out double rw);
-            double.TryParse(chunk[1], out double rz);
-            double.TryParse(chunk[2], out double rx);
-            double.TryParse(chunk[3], out double ry);
-            double.TryParse(chunk[4], out double pz);
-            double.TryParse(chunk[5], out double px);
-            double.TryParse(chunk[6], out double py);
+            double rw = double.Parse(chunk[0], CultureInfo.InvariantCulture);
+            double rz = double.Parse(chunk[1], CultureInfo.InvariantCulture);
+            double rx = double.Parse(chunk[2], CultureInfo.InvariantCulture);
+            double ry = double.Parse(chunk[3], CultureInfo.InvariantCulture);
+            double pz = double.Parse(chunk[4], CultureInfo.InvariantCulture);
+            double px = double.Parse(chunk[5], CultureInfo.InvariantCulture);
+            double py = double.Parse(chunk[6], CultureInfo.InvariantCulture);
             HeadTransform htf = new HeadTransform();
             htf.RotW = rw;
             htf.RotZ = rz;
