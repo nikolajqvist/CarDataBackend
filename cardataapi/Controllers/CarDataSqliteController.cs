@@ -15,7 +15,7 @@ namespace cardataapi.Controllers{
            this.carDataSqliteRepository = carDataSqliteRepository;
        }
        [HttpGet]
-       [Route("{userId}")]
+       [Route("id/{userId}")]
        public IActionResult GetUser(int userId){
            User u = carDataSqliteRepository.GetUser(userId);
            if(userId == 0){
