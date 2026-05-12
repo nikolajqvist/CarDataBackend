@@ -8,28 +8,6 @@ public class StringHandlerService{
     public StringHandlerService(CarDataSqliteChunkRepository carDataSqliteChunkRepository){
         this.carDataSqliteChunkRepository = carDataSqliteChunkRepository;
     }
-    public async Task AddByteArray(byte[] barray){
-        ValidateByteArray(barray);
-        string fromByteToString = Encoding.UTF8.GetString(barray);
-        string[] splitString = fromByteToString.Split("|");
-        string firstLine = splitString[0];
-        int.TryParse(firstLine, out int id);
-        var chunks = splitString.Skip(1).Chunk(3);
-        List<BikeData> bikeDatas = new List<BikeData>();
-        foreach(var chunk in chunks){
-            if(chunk.Length <= 0) continue;
-            if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
-            double yRot = double.Parse(chunk[0]);
-            double curb = double.Parse(chunk[1]);
-            double speed = double.Parse(chunk[2]);
-            BikeData b = new BikeData();
-            b.HandleRotationY = yRot;
-            b.DistanceCurbSide = curb;
-            b.Speed = speed;
-            bikeDatas.Add(b);
-        }
-        await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
-    }
     public async Task AddBikeData(string incomingText){
         ValidateIncomingText(incomingText);
         string readText = ReadIncomingText(incomingText);
@@ -90,10 +68,5 @@ public class StringHandlerService{
         string firstLine = splitText[0];
         int.TryParse(firstLine, out int id);
         return id;
-    }
-    private void ValidateByteArray(byte[] tovalidate){ 
-        if(tovalidate.Length == 0 || tovalidate == null){ 
-            throw new ArgumentNullException("Intet i array"); 
-        } 
     }
 }
