@@ -44,9 +44,9 @@ public class ByteHandlerService {
         foreach(var chunk in chunks){
         if(chunk.Length <= 0) continue;
             if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
-            double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
-            double curb = double.Parse(chunk[1], CultureInfo.InvariantCulture);
-            double speed = double.Parse(chunk[2], CultureInfo.InvariantCulture);
+            double yRot = double.Parse(chunk[0], CultureInfo.CurrentCulture);
+            double curb = double.Parse(chunk[1], CultureInfo.CurrentCulture);
+            double speed = double.Parse(chunk[2], CultureInfo.CurrentCulture);
             Console.WriteLine("YROT: " + yRot + "Curbshiet: " + curb + "SPeed: " + speed);
             BikeData b = new BikeData();
             b.HandleRotationY = yRot;
