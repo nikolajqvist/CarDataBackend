@@ -47,6 +47,7 @@ public class ByteHandlerService {
             double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
             double curb = double.Parse(chunk[1], CultureInfo.InvariantCulture);
             double speed = double.Parse(chunk[2], CultureInfo.InvariantCulture);
+            Console.WriteLine("YROT: " + yRot + "Curbshiet: " + curb + "SPeed: " + speed);
             BikeData b = new BikeData();
             b.HandleRotationY = yRot;
             b.DistanceCurbSide = curb;
