@@ -7,6 +7,31 @@ public class ByteHandlerService {
     public ByteHandlerService(CarDataSqliteChunkRepository carDataChunkRepository){
         this.carDataChunkRepository = carDataChunkRepository;
     }
+    public async Task ByteScenarios(byte[] unityarray){
+        ValidateByteArray(unityarray);
+
+        string fromByteToString = Encoding.UTF8.GetString(unityarray);
+        string[] splitString = fromByteToString.Split("|");
+        string firstLine = splitString[0];
+        int.TryParse(firstLine, out int id);
+        var chunks = splitString.Skip(1).Chunk(3);
+        List<Scenario> scenarios = new List<Scenario>();
+        foreach(var chunk in chunks){
+        if(chunk.Length <= 0) continue;
+            if(chunk.Length < 3) throw new ArgumentOutOfRangeException("Chunk skal minimum være 3 lang");
+            string scename = chunk[0].ToString();
+            double cyclToDis = double.Parse(chunk[1]);
+            DateTime start = DateTime.Parse(chunk[2]);
+            DateTime end = DateTime.Parse(chunk[3]);
+            Scenario sce = new Scenario();
+            sce.ScenarioName = scename;
+            sce.CycleToCarDistance = cyclToDis;
+            sce.ScenarioStart = start;
+            sce.ScenarioEnd = end;
+            scenarios.Add(sce);
+        }
+        await carDataChunkRepository.AddScenarios(scenarios, id);
+    }
     public async Task ByteBikeData(byte[] unityarray){
         ValidateByteArray(unityarray);
         string fromByteToString = Encoding.UTF8.GetString(unityarray);
@@ -59,7 +84,7 @@ public class ByteHandlerService {
         }
         await carDataChunkRepository.AddHeadTransform(hTfs, id);
     }
-    public async Task AddArduino(byte[] unityarray){
+    public async Task ByteArduino(byte[] unityarray){
         ValidateByteArray(unityarray);
         string fromByteToString = Encoding.UTF8.GetString(unityarray);
         string[] splitString = fromByteToString.Split("|");

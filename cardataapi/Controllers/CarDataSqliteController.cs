@@ -45,11 +45,14 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("logscenario")]
-       public async Task<IActionResult> PostScenarios([FromForm] IFormFile file){
-           if(file.Length == 0 || file == null) return BadRequest();
-           IncomingFile incomingFile = new();
-           incomingFile.newTestFile = file;
-           await fileHandlerService.HandleScenarios(incomingFile);
+       public async Task<IActionResult> PostScenarios(){
+           using var ms = new MemoryStream();
+           await Request.Body.CopyToAsync(ms);
+
+           byte[] incomingBytes = ms.ToArray();
+
+           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+           await byteHandlerService.ByteScenarios(incomingBytes);
            return Ok("Very nice yub");
        }
        [HttpPost]
@@ -70,11 +73,15 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("logarduino")]
-       public async Task<IActionResult> PostArduino([FromForm] IFormFile file){
-           if(file.Length == 0 || file == null) return BadRequest();
-           IncomingFile incomingFile = new();
-           incomingFile.newTestFile = file;
-           await fileHandlerService.HandleBraking(incomingFile);
+       public async Task<IActionResult> PostArduino(){
+
+           using var ms = new MemoryStream();
+           await Request.Body.CopyToAsync(ms);
+
+           byte[] incomingBytes = ms.ToArray();
+
+           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+           await byteHandlerService.ByteArduino(incomingBytes);
            return Ok("Very nice yub");
        }
        // [HttpPost]
