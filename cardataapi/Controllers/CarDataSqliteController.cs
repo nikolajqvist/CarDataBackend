@@ -41,7 +41,7 @@ namespace cardataapi.Controllers{
 
            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
            await byteHandlerService.ByteBikeData(incomingBytes);
-           return Ok("Very nice yub");
+           return Ok("Bikedata tilføjet i db!");
        }
        [HttpPost]
        [Route("logscenario")]
@@ -53,7 +53,7 @@ namespace cardataapi.Controllers{
 
            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
            await byteHandlerService.ByteScenarios(incomingBytes);
-           return Ok("Very nice yub");
+           return Ok("Scenariedata tilføjet i db!");
        }
        [HttpPost]
        [Route("loghtf")]
@@ -69,7 +69,7 @@ namespace cardataapi.Controllers{
 
            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
            await byteHandlerService.ByteHeadTransform(incomingBytes);
-           return Ok("Very nice yub");
+           return Ok("HeadTransformData tilføjet i db!");
        }
        [HttpPost]
        [Route("logarduino")]
@@ -82,7 +82,7 @@ namespace cardataapi.Controllers{
 
            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
            await byteHandlerService.ByteArduino(incomingBytes);
-           return Ok("Very nice yub");
+           return Ok("Arduinodata tilføjet i db!");
        }
        // [HttpPost]
        // [Route("logsqlitetime")]
