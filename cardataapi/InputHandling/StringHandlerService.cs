@@ -10,7 +10,7 @@ public class StringHandlerService{
     }
     public async Task AddByteArray(byte[] barray){
         ValidateByteArray(barray);
-        string fromByteToString = Encoding.ASCII.GetString(barray);
+        string fromByteToString = Encoding.UTF8.GetString(barray);
         string[] splitString = fromByteToString.Split("|");
         string firstLine = splitString[0];
         int.TryParse(firstLine, out int id);
