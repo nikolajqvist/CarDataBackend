@@ -25,13 +25,15 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("logbikedata")]
-       public async Task<IActionResult> PostBD([FromBody] string incomingText){
+       public async Task<IActionResult> PostBD([FromBody] byte[] incomingText){
            // if(file.Length == 0 || file == null) return BadRequest();
            // IncomingFile incomingFile = new();
            // incomingFile.newTestFile = file;
            // await fileHandlerService.HandleBikeData(incomingFile);
-           if(string.IsNullOrEmpty(incomingText)) return BadRequest();
-           await stringHandlerService.AddBikeData(incomingText);
+           // if(string.IsNullOrEmpty(incomingText)) return BadRequest();
+           // await stringHandlerService.AddBikeData(incomingText);
+           if(incomingText.Length == 0 || incomingText == null) return BadRequest();
+           await stringHandlerService.AddByteArray(incomingText);
            return Ok("Very nice yub");
        }
        [HttpPost]
