@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CARDataLib;
 namespace cardataapi.Controllers{
 
-    [Route("api/car")]
+    [Route("api/cardata")]
     [ApiController]
     public class CarDataSqliteController : ControllerBase
     {
