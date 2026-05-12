@@ -29,6 +29,32 @@ public class StringHandlerService{
         }
         await carDataSqliteChunkRepository.AddBikeData(bikeDatas, id);
     }
+    public async void AddArduino(string incomingText){
+        ValidateIncomingText(incomingText);
+
+        string readText = ReadIncomingText(incomingText);
+        string[] splitText = readText.Split("|");
+        int id = SameProcedureAsLastMethodJames(splitText);
+        var chunks = splitText.Skip(1).Chunk(4);
+        List<LeftBrake> leftBrakes = new List<LeftBrake>();
+        List<RightBrake> rightBrakes = new List<RightBrake>();
+        foreach(var chunk in chunks){
+            bool left = bool.Parse(chunk[0]);
+            bool right = bool.Parse(chunk[1]);
+            DateTime dT = DateTime.Parse(chunk[2]); 
+            RightBrake rb = new RightBrake();
+            LeftBrake lb = new LeftBrake();
+            lb.LeftBraking = left;
+            lb.BrakeTime = dT;
+            rb.RightBraking = right;
+            rb.BrakeTime = dT;
+            leftBrakes.Add(lb);
+            rightBrakes.Add(rb);
+        }
+        await carDataSqliteChunkRepository.AddLeftBrake(leftBrakes, id);
+        await carDataSqliteChunkRepository.AddRigthBrake(rightBrakes, id);
+
+    }
     private void ValidateIncomingText(string incomingText){
         if(string.IsNullOrEmpty(incomingText)){
             throw new ArgumentOutOfRangeException("Fejl i teksen");
@@ -37,5 +63,10 @@ public class StringHandlerService{
     private string ReadIncomingText(string incomingText){
         string readText = File.ReadAllText(incomingText);
         return readText;
+    }
+    private int SameProcedureAsLastMethodJames(string[] splitText){
+        string firstLine = splitText[0];
+        int.TryParse(firstLine, out int id);
+        return id;
     }
 }
