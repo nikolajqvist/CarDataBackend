@@ -6,10 +6,12 @@ namespace cardataapi.Controllers{
     [ApiController]
     public class CarDataSqliteController : ControllerBase
     {
+       private ByteHandlerService byteHandlerService; 
        private FileHandlerService fileHandlerService;
        private CarDataSqliteRepository carDataSqliteRepository;
        private StringHandlerService stringHandlerService;
-       public CarDataSqliteController(StringHandlerService stringHandlerService, FileHandlerService fileHandlerService, CarDataSqliteRepository carDataSqliteRepository){
+       public CarDataSqliteController(ByteHandlerService byteHandlerService, StringHandlerService stringHandlerService, FileHandlerService fileHandlerService, CarDataSqliteRepository carDataSqliteRepository){
+           this.byteHandlerService = byteHandlerService;
            this.fileHandlerService = fileHandlerService;
            this.stringHandlerService = stringHandlerService;
            this.carDataSqliteRepository = carDataSqliteRepository;
@@ -38,7 +40,7 @@ namespace cardataapi.Controllers{
            byte[] incomingBytes = ms.ToArray();
 
            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
-           await stringHandlerService.AddByteArray(incomingBytes);
+           await byteHandlerService.ByteBikeData(incomingBytes);
            return Ok("Very nice yub");
        }
        [HttpPost]
@@ -52,11 +54,18 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("loghtf")]
-       public async Task<IActionResult> PostPD([FromForm] IFormFile file){
-           if(file.Length == 0 || file == null) return BadRequest();
-           IncomingFile incomingFile = new();
-           incomingFile.newTestFile = file;
-           await fileHandlerService.HandleHeadTrans(incomingFile);
+       public async Task<IActionResult> PostPD(){
+           // if(file.Length == 0 || file == null) return BadRequest();
+           // IncomingFile incomingFile = new();
+           // incomingFile.newTestFile = file;
+
+           using var ms = new MemoryStream();
+           await Request.Body.CopyToAsync(ms);
+
+           byte[] incomingBytes = ms.ToArray();
+
+           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+           await byteHandlerService.ByteHeadTransform(incomingBytes);
            return Ok("Very nice yub");
        }
        [HttpPost]
