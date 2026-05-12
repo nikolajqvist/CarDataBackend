@@ -47,6 +47,7 @@ public class ByteHandlerService {
             // double yRot = double.Parse(chunk[0], CultureInfo.InvariantCulture);
             // double curb = double.Parse(chunk[1]);
             // double speed = double.Parse(chunk[2]);
+            Console.WriteLine(chunk[2]);
             double.TryParse(chunk[0], out double yRot);
             double.TryParse(chunk[1], out double curb);
             double.TryParse(chunk[2], out double speed);
