@@ -8,8 +8,10 @@ namespace cardataapi.Controllers{
     {
        private FileHandlerService fileHandlerService;
        private CarDataSqliteRepository carDataSqliteRepository;
-       public CarDataSqliteController(FileHandlerService fileHandlerService, CarDataSqliteRepository carDataSqliteRepository){
+       private StringHandlerService stringHandlerService;
+       public CarDataSqliteController(StringHandlerService stringHandlerService, FileHandlerService fileHandlerService, CarDataSqliteRepository carDataSqliteRepository){
            this.fileHandlerService = fileHandlerService;
+           this.stringHandlerService = stringHandlerService;
            this.carDataSqliteRepository = carDataSqliteRepository;
        }
        [HttpGet]
@@ -22,11 +24,13 @@ namespace cardataapi.Controllers{
        }
        [HttpPost]
        [Route("logsqlitebikedata")]
-       public async Task<IActionResult> PostBD([FromForm] IFormFile file){
-           if(file.Length == 0 || file == null) return BadRequest();
-           IncomingFile incomingFile = new();
-           incomingFile.newTestFile = file;
-           await fileHandlerService.HandleBikeData(incomingFile);
+       public async Task<IActionResult> PostBD([FromBody] string incomingText){
+           // if(file.Length == 0 || file == null) return BadRequest();
+           // IncomingFile incomingFile = new();
+           // incomingFile.newTestFile = file;
+           // await fileHandlerService.HandleBikeData(incomingFile);
+           if(string.IsNullOrEmpty(incomingText)) return BadRequest();
+           await stringHandlerService.AddBikeData(incomingText);
            return Ok("Very nice yub");
        }
        [HttpPost]

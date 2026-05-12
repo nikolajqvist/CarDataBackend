@@ -19,6 +19,7 @@ public class Program
             throw new Exception("Databasefejl");
         }
         builder.Services.AddSingleton<FileHandlerService>();
+        builder.Services.AddSingleton<StringHandlerService>();
         builder.Services.AddSingleton<CarDataMssqlRepository>(new CarDataMssqlRepository(cardatadb));
         builder.Services.AddSingleton<CarDataChunkRepository>(new CarDataChunkRepository(cardatadb));
         builder.Services.AddSingleton<CarDataSqliteRepository>(new CarDataSqliteRepository(cardatadbsqlite));
