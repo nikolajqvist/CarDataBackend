@@ -41,7 +41,7 @@ public class CarDataSqliteChunkRepository{
             throw new Exception(e.Message);
         }
     }
-    public async void AddPulseData(List<PulseData> pulseData, int userId)
+    public async Task AddPulseData(List<PulseData> pulseData, int userId)
     {
         try
         {

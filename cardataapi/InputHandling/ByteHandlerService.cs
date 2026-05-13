@@ -110,6 +110,24 @@ public class ByteHandlerService {
         await carDataChunkRepository.AddLeftBrake(leftBrakes, id);
         await carDataChunkRepository.AddRigthBrake(rightBrakes, id);
     }
+    public async Task BytePulseData(byte[] unityarray){
+        ValidateByteArray(unityarray);
+        string fromByteToString = Encoding.UTF8.GetString(unityarray);
+        string[] splitString = fromByteToString.Split("|");
+        string firstLine = splitString[0];
+        int.TryParse(firstLine, out int id);
+        var chunks = splitString.Skip(1).Chunk(2);
+        List<PulseData> pulseDatas = new List<PulseData>();
+        foreach(var chunk in chunks){
+            int pulse = int.Parse(chunk[0]);
+            DateTime dateTime = DateTime.Parse(chunk[1]);
+            PulseData p = new PulseData();
+            p.Pulse = pulse;
+            p.PulseTime = dateTime;
+            pulseDatas.Add(p);
+        }
+        await carDataChunkRepository.AddPulseData(pulseDatas, id);
+    }
     private void ValidateByteArray(byte[] tovalidate){ 
         if(tovalidate.Length == 0 || tovalidate == null){
             throw new ArgumentNullException("Intet i array"); 

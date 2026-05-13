@@ -7,14 +7,14 @@ namespace cardataapi.Controllers{
     public class CarDataSqliteController : ControllerBase
     {
        private ByteHandlerService byteHandlerService; 
-       private FileHandlerService fileHandlerService;
+       // private FileHandlerService fileHandlerService;
        private CarDataSqliteRepository carDataSqliteRepository;
-       private StringHandlerService stringHandlerService;
-       public CarDataSqliteController(ByteHandlerService byteHandlerService, StringHandlerService stringHandlerService, FileHandlerService fileHandlerService, CarDataSqliteRepository carDataSqliteRepository){
+       // private StringHandlerService stringHandlerService;
+       public CarDataSqliteController(ByteHandlerService byteHandlerService, /*StringHandlerService stringHandlerService, FileHandlerService fileHandlerService*/ CarDataSqliteRepository carDataSqliteRepository){
            this.byteHandlerService = byteHandlerService;
-           this.fileHandlerService = fileHandlerService;
-           this.stringHandlerService = stringHandlerService;
            this.carDataSqliteRepository = carDataSqliteRepository;
+           // this.fileHandlerService = fileHandlerService;
+           // this.stringHandlerService = stringHandlerService;
        }
        [HttpGet]
        [Route("id/{userId}")]
@@ -84,14 +84,17 @@ namespace cardataapi.Controllers{
            await byteHandlerService.ByteArduino(incomingBytes);
            return Ok("Arduinodata tilføjet i db!");
        }
-       // [HttpPost]
-       // [Route("logsqlitetime")]
-       // public async Task<IActionResult> PostTime([FromForm] IFormFile file){
-       //     if(file.Length == 0 || file == null) return BadRequest();
-       //     IncomingFile incomingFile = new();
-       //     incomingFile.newTestFile = file;
-       //     await fileHandlerService.HandleTimeCheck(incomingFile);
-       //     return Ok("Very nice yub");
-       // }
+       [HttpPost]
+       [Route("logpulse")]
+       public async Task<IActionResult> PostTime(){
+           using var ms = new MemoryStream();
+           await Request.Body.CopyToAsync(ms);
+
+           byte[] incomingBytes = ms.ToArray();
+           
+           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+           await byteHandlerService.BytePulseData(incomingBytes);
+           return Ok("Very nice yub");
+       }
     }
 }
