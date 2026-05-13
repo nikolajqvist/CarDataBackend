@@ -49,14 +49,16 @@ public class CarDataSqliteChunkRepository{
             using (connection)
             {
                 connection.Open();
-                string sql = "insert into PulseData (UserId, Pulse) values (@userId, @pulse)";
+                string sql = "insert into PulseData (UserId, Pulse, PulseTime) values (@userId, @pulse, @pulseTime)";
                 SqliteCommand command = connection.CreateCommand(); 
                 command.CommandText = sql;
                 SqliteParameter userIdParam = HelperMethods.CreateParam(command, "@userId");
                 SqliteParameter pulseParam = HelperMethods.CreateParam(command, "@pulse");
+                SqliteParameter pulseTimeParam = HelperMethods.CreateParam(command, "@pulseTime");
                 foreach(PulseData pulse in pulseData){
                     userIdParam.Value = userId;
                     pulseParam.Value = pulse.Pulse;
+                    pulseTimeParam.Value = pulse.PulseTime;
                      await command.ExecuteNonQueryAsync();
                 }
             }
