@@ -9,6 +9,16 @@ public class CarDataSqliteChunkRepository{
     public CarDataSqliteChunkRepository(string connectionString){
         this.connectionString = connectionString;
     }
+    public List<PulseData> GetAll(){
+        try{
+            using SqliteConnection connection = HelperMethods.NewSqliteConnection(connectionString);
+                connection.Open();
+                return null;
+        }
+        catch(Exception e){
+            throw new Exception(e.Message);
+        }
+    }
     public async Task AddScenarios(List<Scenario> scenarios, int userId)
     {
         try
@@ -45,7 +55,7 @@ public class CarDataSqliteChunkRepository{
     {
         try
         {
-            SqliteConnection connection = new SqliteConnection(connectionString);
+            SqliteConnection connection = HelperMethods.NewSqliteConnection(connectionString);
             using (connection)
             {
                 connection.Open();

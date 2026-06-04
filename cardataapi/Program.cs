@@ -13,18 +13,18 @@ public class Program
         {
             throw new Exception("Databasefejl");
         }
-        string? cardatadb = builder.Configuration.GetConnectionString("Default");
-        if(cardatadb == null)
-        {
-            throw new Exception("Databasefejl");
-        }
+        // string? cardatadb = builder.Configuration.GetConnectionString("Default");
+        // if(cardatadb == null)
+        // {
+        //     throw new Exception("Databasefejl");
+        // }
         builder.Services.AddSingleton<ByteHandlerService>();
-        builder.Services.AddSingleton<FileHandlerService>();
-        builder.Services.AddSingleton<StringHandlerService>();
-        builder.Services.AddSingleton<CarDataMssqlRepository>(new CarDataMssqlRepository(cardatadb));
-        builder.Services.AddSingleton<CarDataChunkRepository>(new CarDataChunkRepository(cardatadb));
         builder.Services.AddSingleton<CarDataSqliteRepository>(new CarDataSqliteRepository(cardatadbsqlite));
         builder.Services.AddSingleton<CarDataSqliteChunkRepository>(new CarDataSqliteChunkRepository(cardatadbsqlite));
+        // builder.Services.AddSingleton<FileHandlerService>();
+        // builder.Services.AddSingleton<StringHandlerService>();
+        // builder.Services.AddSingleton<CarDataMssqlRepository>(new CarDataMssqlRepository(cardatadb));
+        // builder.Services.AddSingleton<CarDataChunkRepository>(new CarDataChunkRepository(cardatadb));
 
         // builder.WebHost.UseUrls("https://0.0.0.0:5000");
 
