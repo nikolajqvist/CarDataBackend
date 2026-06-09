@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CARDataLib;
 namespace cardataapi.Controllers{
-:lua print(vim.inspect(vim.lsp.get_clients({ bufnr = 0 })))
     //API routen er custom
     [Route("api/cardata")]
     [ApiController]
