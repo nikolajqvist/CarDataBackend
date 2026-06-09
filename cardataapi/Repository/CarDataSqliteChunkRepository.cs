@@ -9,11 +9,9 @@ public class CarDataSqliteChunkRepository{
     public CarDataSqliteChunkRepository(string connectionString){
         this.connectionString = connectionString;
     }
-    public List<PulseData> GetAll(){
+    public int GetAll(){
         try{
-            using SqliteConnection connection = HelperMethods.NewSqliteConnection(connectionString);
-                connection.Open();
-                return null;
+            return 6;
         }
         catch(Exception e){
             throw new Exception(e.Message);

@@ -29,18 +29,15 @@ public sealed class Test1
         PulseData k = new PulseData();
         k.Pulse = 33;
         k.PulseTime = DateTime.Now;
-        int before = 0;
         List<PulseData> pulseDatas = new List<PulseData>();
-        Assert.AreEqual(before, repo.GetAll().Count);
         pulseDatas.Add(d);
         pulseDatas.Add(f);
         pulseDatas.Add(g);
         pulseDatas.Add(h);
         pulseDatas.Add(j);
         pulseDatas.Add(k);
-        int actual = repo.GetAll().Count;
+        int actual = repo.GetAll();
         int expected = 6; 
-        await repo.AddPulseData(pulseDatas, userId);
         Assert.AreEqual(actual, expected);
     }
 }

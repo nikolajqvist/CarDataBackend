@@ -1,5 +1,6 @@
 namespace cardataapi;
 using System.Data;
+using System.Data.SqlTypes;
 using CARDataLib;
 using Microsoft.Data.SqlClient;
 
@@ -56,6 +57,69 @@ public class CarDataChunkRepository{
             throw new Exception(e.Message);
         }
     }
+        public async Task AddRightBrake(List<RightBrake> rightBrakes, int userId){
+        try{
+            SqlConnection connection = new SqlConnection(connectionString);
+            using(connection){
+                connection.Open();
+                DataTable table = new DataTable();
+            SqlBulkCopy bulk = new SqlBulkCopy(connection)
+                {
+                    DestinationTableName = "dbo.RightBrake",
+                    BatchSize = 1000,
+                    BulkCopyTimeout = 60,
+                    EnableStreaming = true
+                };
+                bulk.ColumnMappings.Add("UserId", "UserId");
+                bulk.ColumnMappings.Add("Brake", "Brake");
+                bulk.ColumnMappings.Add("BrakeTime", "BrakeTime");
+
+                table.Columns.Add("UserId", typeof(int));
+                table.Columns.Add("Brake", typeof(bool));
+                table.Columns.Add("BrakeTime", typeof(DateTime));
+                foreach (RightBrake rightBrake in rightBrakes)
+                {
+                    table.Rows.Add(userId, rightBrake.RightBraking, rightBrake.BrakeTime);
+                }
+                await bulk.WriteToServerAsync(table);
+            } 
+        } 
+            catch(Exception e){
+                throw new Exception(e.Message);
+        }
+    }
+
+    public async Task AddLeftBrake(List<LeftBrake> leftbrakes, int userId){
+        try{
+            SqlConnection connection = new SqlConnection(connectionString);
+            using(connection){
+                connection.Open();
+                DataTable table = new DataTable();
+            SqlBulkCopy bulk = new SqlBulkCopy(connection)
+                {
+                    DestinationTableName = "dbo.LeftBrake",
+                    BatchSize = 1000,
+                    BulkCopyTimeout = 60,
+                    EnableStreaming = true
+                };
+                bulk.ColumnMappings.Add("UserId", "UserId");
+                bulk.ColumnMappings.Add("Brake", "Brake");
+                bulk.ColumnMappings.Add("BrakeTime", "BrakeTime");
+
+                table.Columns.Add("UserId", typeof(int));
+                table.Columns.Add("Brake", typeof(bool));
+                table.Columns.Add("BrakeTime", typeof(DateTime));
+                foreach (LeftBrake leftBrake in leftbrakes)
+                {
+                    table.Rows.Add(userId, leftBrake.LeftBraking, leftBrake.BrakeTime);
+                }
+                await bulk.WriteToServerAsync(table);
+            } 
+        } 
+            catch(Exception e){
+                throw new Exception(e.Message);
+        }
+    }
     public async Task AddPulseData(List<PulseData> pulseData, int userId)
     {
         try
@@ -77,9 +141,10 @@ public class CarDataChunkRepository{
 
                 table.Columns.Add("UserId", typeof(int));
                 table.Columns.Add("Pulse", typeof(double));
+                table.Columns.Add("PulseTime", typeof(DateTime));
                 foreach (PulseData pulse in pulseData)
                 {
-                    table.Rows.Add(userId, pulse.Pulse);
+                    table.Rows.Add(userId, pulse.Pulse, pulse.PulseTime);
                 }
                 await bulk.WriteToServerAsync(table);
             }
@@ -160,36 +225,6 @@ public class CarDataChunkRepository{
                 foreach (HeadTransform hTF in headTransforms)
                 {
                     table.Rows.Add(userId, hTF.RotW, hTF.RotZ, hTF.RotX, hTF.RotY, hTF.PosX, hTF.PosY, hTF.PosZ);
-                }
-                await bulk.WriteToServerAsync(table);
-            }
-        }
-        catch (SqlException e)
-        {
-            throw new Exception(e.Message);
-        }
-    }
-    public async Task AddTimeCheck(List<TimeCheck> timeChecks)
-    {
-        try
-        {
-            SqlConnection connection = HelperMethods.NewConnection(connectionString);
-            using (connection)
-            {
-                connection.Open();
-                DataTable table = new DataTable();
-                SqlBulkCopy bulk = new SqlBulkCopy(connection)
-                {
-                    DestinationTableName = "dbo.TimeCheck",
-                    BatchSize = 1000,
-                    BulkCopyTimeout = 60,
-                    EnableStreaming = true
-                };
-                bulk.ColumnMappings.Add("Time", "Time");
-                table.Columns.Add("Time", typeof(int));
-                foreach (TimeCheck time in timeChecks)
-                {
-                    table.Rows.Add(time.Time);
                 }
                 await bulk.WriteToServerAsync(table);
             }
