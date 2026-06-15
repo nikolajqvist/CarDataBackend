@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using CARDataLib;
 namespace cardataapi.Controllers{
     //API routen er custom
@@ -22,6 +23,28 @@ namespace cardataapi.Controllers{
                return BadRequest();
            }
            return Ok(u);
+       }
+       [HttpPost]
+       [Route("newuser")]
+       public async Task<IActionResult> NewUser(User u){
+           // Random rnd = new Random();
+           // int age = rnd.Next(18, 50);
+           // int testnumber = rnd.Next(0,100);
+           // string gender = null;
+           // if(testnumber > 50)
+           //     gender = "Kvinde";
+           // if(testnumber < 50)
+           //     gender = "Mand";
+           // using var ms = new MemoryStream();
+           // await Request.Body.CopyToAsync(ms);
+           //  byte[] incomingBytes = ms.ToArray();
+           // string fromByteToString = Encoding.UTF8.GetString(incomingBytes);
+           // int.TryParse(fromByteToString, out int id);
+
+            if(u == null)
+                return BadRequest();
+            carDataSqliteSingleRepository.FirstInstanceOfUser(u);
+            return Created("Oprettet bruger", u.TestPersonNumber);
        }
        [HttpPost]
        [Route("logbikedata")]

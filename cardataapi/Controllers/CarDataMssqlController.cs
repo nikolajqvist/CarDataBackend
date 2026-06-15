@@ -34,68 +34,76 @@ namespace cardataapi.Controllers
             else
                 return BadRequest();
         }
-       [HttpPost]
-       [Route("logbikedata")]
-       public async Task<IActionResult> BackupBD(){
-           using var ms = new MemoryStream();
-           await Request.Body.CopyToAsync(ms);
+        [HttpGet]
+        [Route("id/getfull/{userId}")]
+        public IActionResult GetFullTestPerson(int userId){
+            FullUser fUser = carDataRepository.GetFull(userId);
+            if(fUser == null)
+                return BadRequest();
+            return Ok(fUser);
+        }
+        [HttpPost]
+        [Route("logbikedata")]
+        public async Task<IActionResult> BackupBD(){
+            using var ms = new MemoryStream();
+            await Request.Body.CopyToAsync(ms);
 
-           byte[] incomingBytes = ms.ToArray();
+            byte[] incomingBytes = ms.ToArray();
 
-           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
-           await mssqlByteHandlerService.ByteBikeData(incomingBytes);
-           return Ok("Bike data indsat. /Backup");
-       }
-       [HttpPost]
-       [Route("logscenario")]
-       public async Task<IActionResult> BackupScenario(){
-           using var ms = new MemoryStream();
-           await Request.Body.CopyToAsync(ms);
+            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+            await mssqlByteHandlerService.ByteBikeData(incomingBytes);
+            return Ok("Bike data indsat. /Backup");
+        }
+        [HttpPost]
+        [Route("logscenario")]
+        public async Task<IActionResult> BackupScenario(){
+            using var ms = new MemoryStream();
+            await Request.Body.CopyToAsync(ms);
 
-           byte[] incomingBytes = ms.ToArray();
+            byte[] incomingBytes = ms.ToArray();
 
-           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
-           await mssqlByteHandlerService.ByteScenarios(incomingBytes);
-           return Ok("Scenario data indsat. /Backup");
-       }
-       [HttpPost]
-       [Route("loghtf")]
-       public async Task<IActionResult> BackupHtf(){
-           using var ms = new MemoryStream();
-           await Request.Body.CopyToAsync(ms);
+            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+            await mssqlByteHandlerService.ByteScenarios(incomingBytes);
+            return Ok("Scenario data indsat. /Backup");
+        }
+        [HttpPost]
+        [Route("loghtf")]
+        public async Task<IActionResult> BackupHtf(){
+            using var ms = new MemoryStream();
+            await Request.Body.CopyToAsync(ms);
 
-           byte[] incomingBytes = ms.ToArray();
+            byte[] incomingBytes = ms.ToArray();
 
-           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
-           await mssqlByteHandlerService.ByteHeadTransform(incomingBytes);
-           return Ok("Headtransform data indsat. /Backup");
-       }
-       [HttpPost]
-       [Route("logarduino")]
-       public async Task<IActionResult> BackupArduino(){
-           using var ms = new MemoryStream();
-           await Request.Body.CopyToAsync(ms);
+            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+            await mssqlByteHandlerService.ByteHeadTransform(incomingBytes);
+            return Ok("Headtransform data indsat. /Backup");
+        }
+        [HttpPost]
+        [Route("logarduino")]
+        public async Task<IActionResult> BackupArduino(){
+            using var ms = new MemoryStream();
+            await Request.Body.CopyToAsync(ms);
 
-           byte[] incomingBytes = ms.ToArray();
+            byte[] incomingBytes = ms.ToArray();
 
-           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
-           await mssqlByteHandlerService.ByteArduino(incomingBytes);
-           return Ok("Arduino data indsat. /Backup");
-       }
-       [HttpPost]
-       [Route("logpulse")]
-       public async Task<IActionResult> BackupPulseData(){
-           using var ms = new MemoryStream();
-           await Request.Body.CopyToAsync(ms);
+            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+            await mssqlByteHandlerService.ByteArduino(incomingBytes);
+            return Ok("Arduino data indsat. /Backup");
+        }
+        [HttpPost]
+        [Route("logpulse")]
+        public async Task<IActionResult> BackupPulseData(){
+            using var ms = new MemoryStream();
+            await Request.Body.CopyToAsync(ms);
 
-           byte[] incomingBytes = ms.ToArray();
+            byte[] incomingBytes = ms.ToArray();
 
-           if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
+            if(incomingBytes.Length == 0 || incomingBytes == null) return BadRequest();
 
-           await mssqlByteHandlerService.BytePulseData(incomingBytes);
+            await mssqlByteHandlerService.BytePulseData(incomingBytes);
 
-           return Ok("Pulse data indsat. /Backup");
-       }
+            return Ok("Pulse data indsat. /Backup");
+        }
 
     }
 }
