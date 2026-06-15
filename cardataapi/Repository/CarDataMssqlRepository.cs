@@ -21,7 +21,7 @@ public class CarDataMssqlRepository{
                 SqlDataReader reader = command.ExecuteReader();
                 if(reader.Read()){
                     u.TestPersonNumber = reader.GetInt32(0);
-                    u.Age = reader.GetInt32(1);
+                    u.Age = reader.GetString(1);
                     u.Gender = reader.GetString(2);
                     return u;
                 }
@@ -47,7 +47,7 @@ public class CarDataMssqlRepository{
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     HelperMethods.BindValueInt(command, "@testpersonnumber", user.TestPersonNumber);
-                    HelperMethods.BindValueInt(command, "@age", user.Age);
+                    HelperMethods.BindValueString(command, "@age", user.Age);
                     HelperMethods.BindValueString(command, "@gender", user.Gender);
                     command.ExecuteNonQuery();
                 }
