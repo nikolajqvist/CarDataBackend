@@ -17,7 +17,7 @@ public class CarDataSqliteRepository{
             SqliteCommand comm = new SqliteCommand(sql, connection);
             HelperMethods.BindSqliteValueInt(comm, "@id", user.TestPersonNumber);
             HelperMethods.BindSqliteValueString(comm, "@gender", user.Gender);
-            HelperMethods.BindSqliteValueInt(comm, "@age", user.Age);
+            HelperMethods.BindSqliteValueString(comm, "@age", user.Age);
             comm.ExecuteNonQuery();
         }
     }
@@ -30,7 +30,7 @@ public class CarDataSqliteRepository{
             HelperMethods.BindSqliteValueInt(comm, "@id", id);
             SqliteDataReader reader = comm.ExecuteReader();
             if(reader.Read()){
-                User u = new User(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2));
+                User u = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
                 return u;
             }
             return null;
