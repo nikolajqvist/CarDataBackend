@@ -15,12 +15,12 @@ namespace cardataapi.Controllers
     public class CarDataMssqlController : ControllerBase
     {
         private CarDataMssqlRepository carDataRepository;
-        private CarDataChunkRepository chunkRepository;
+        // private CarDataChunkRepository chunkRepository;
         private MssqlByteHandlerService mssqlByteHandlerService;
-        public CarDataMssqlController(CarDataMssqlRepository carDataRepository, CarDataChunkRepository chunkRepository, MssqlByteHandlerService mssqlByteHandlerService)
+        public CarDataMssqlController(CarDataMssqlRepository carDataRepository/*, CarDataChunkRepository chunkRepository*/, MssqlByteHandlerService mssqlByteHandlerService)
         {
             this.carDataRepository = carDataRepository;
-            this.chunkRepository = chunkRepository;
+            // this.chunkRepository = chunkRepository;
             this.mssqlByteHandlerService = mssqlByteHandlerService;
         }
         // GET: api/<PostController>
@@ -34,14 +34,14 @@ namespace cardataapi.Controllers
             else
                 return BadRequest();
         }
-        [HttpGet]
-        [Route("id/getfull/{userId}")]
-        public IActionResult GetFullTestPerson(int userId){
-            FullUser fUser = carDataRepository.GetFull(userId);
-            if(fUser == null)
-                return BadRequest();
-            return Ok(fUser);
-        }
+        // [HttpGet]
+        // [Route("id/getfull/{userId}")]
+        // public IActionResult GetFullTestPerson(int userId){
+        //     User fUser = carDataRepository.(userId);
+        //     if(fUser == null)
+        //         return BadRequest();
+        //     return Ok(fUser);
+        // }
         [HttpPost]
         [Route("logbikedata")]
         public async Task<IActionResult> BackupBD(){
@@ -107,4 +107,3 @@ namespace cardataapi.Controllers
 
     }
 }
-
