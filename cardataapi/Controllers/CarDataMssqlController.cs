@@ -15,12 +15,12 @@ namespace cardataapi.Controllers
     public class CarDataMssqlController : ControllerBase
     {
         private CarDataMssqlRepository carDataRepository;
-        // private CarDataChunkRepository chunkRepository;
+        private CarDataChunkRepository chunkRepository;
         private MssqlByteHandlerService mssqlByteHandlerService;
-        public CarDataMssqlController(CarDataMssqlRepository carDataRepository/*, CarDataChunkRepository chunkRepository*/, MssqlByteHandlerService mssqlByteHandlerService)
+        public CarDataMssqlController(CarDataMssqlRepository carDataRepository, CarDataChunkRepository chunkRepository, MssqlByteHandlerService mssqlByteHandlerService)
         {
             this.carDataRepository = carDataRepository;
-            // this.chunkRepository = chunkRepository;
+            this.chunkRepository = chunkRepository;
             this.mssqlByteHandlerService = mssqlByteHandlerService;
         }
         // GET: api/<PostController>

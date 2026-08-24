@@ -9,20 +9,22 @@ public class CarDataMssqlRepository{
     }
     public User GetUser(int id){
         try{
+            // User u = null;
             using (SqlConnection connection = new SqlConnection(connectionString)){
-                User u = null;
                 connection.Open();
 
-                string sql = "SELECT (TestPersonNumber, Age, Gender) FROM Users WHERE (TestPersonNumber = @testpersonnumber)";
+                string sql = "SELECT TestPersonNumber, Gender, Age FROM Users WHERE (TestPersonNumber = @testpersonnumber)";
 
                 SqlCommand command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@testpersonnumber", id);
 
                 SqlDataReader reader = command.ExecuteReader();
                 if(reader.Read()){
-                    u.TestPersonNumber = reader.GetInt32(0);
-                    u.Age = reader.GetString(1);
-                    u.Gender = reader.GetString(2);
+                    // int age = reader.GetInt32(2);
+                    User u = new User(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
+                    // u.TestPersonNumber = reader.GetInt32(0);
+                    // u.Age = reader.GetString(1);
+                    // u.Gender = reader.GetString(2);
                     return u;
                 }
                 else{
@@ -47,7 +49,7 @@ public class CarDataMssqlRepository{
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     HelperMethods.BindValueInt(command, "@testpersonnumber", user.TestPersonNumber);
-                    HelperMethods.BindValueString(command, "@age", user.Age);
+                    HelperMethods.BindValueInt(command, "@age", user.Age);
                     HelperMethods.BindValueString(command, "@gender", user.Gender);
                     command.ExecuteNonQuery();
                 }
