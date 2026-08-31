@@ -41,8 +41,8 @@ public class Program
         app.UseHttpsRedirection();
         app.MapControllers();
 
-        app.Run();        
+        // app.Run();        
 
-        // app.Run("http://0.0.0.0:5001");
+        app.Run("http://0.0.0.0:5001");
     }
 }
