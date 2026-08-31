@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using System.Reflection.Metadata;
+using System.Diagnostics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,7 +29,7 @@ namespace cardataapi.Controllers
         [Route("id/{userId}")]
         public IActionResult GetUser(int userId)
         {
-            User user = carDataRepository.GetUser(userId);
+            FullUser user = carDataRepository.GetUser(userId);
             if(user != null)
                 return Ok(user);
             else
